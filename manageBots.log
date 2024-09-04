@@ -1,0 +1,11 @@
+2024-09-04 23:46:21,412 [INFO] [main] [<module>]: === Настройки: ===
+2024-09-04 23:46:21,412 [INFO] [main] [<module>]: BASE_WEBHOOK_URL= 'https://178.204.149.172:8443'
+2024-09-04 23:46:21,412 [INFO] [main] [<module>]: WEBHOOK_SSL_CERT= '/etc/ssl/nginx/178.204.149.172.self.crt'
+2024-09-04 23:46:21,412 [INFO] [main] [<module>]: WEBHOOK_SSL_KEY= '/etc/ssl/nginx/178.204.149.172.self.key'
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('DATABASE_URL_SQLITE', 'sqlite+pysqlite:///./DB/mb.sqlite3')
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('SELF_SSL', True)
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('PUBLIC_IP', '178.204.149.172')
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('WEBHOOK_PATH', '/bot/')
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('WEBHOOK_SECRET', 'sEcrEet2-24')
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('WEB_SERVER_HOST', '127.0.0.1')
+2024-09-04 23:46:21,412 [INFO] [main] [<listcomp>]: ('LOG_MANAGE', 'manageBots.log')
