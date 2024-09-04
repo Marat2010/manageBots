@@ -1,4 +1,14 @@
+#!/bin/bash
+
 # === Скрипт для предварительной подготовки сервера VPS ===
+
+echo "=== !!! Выполнять под пользователем root !!! ==="
+
+if [ $USER != 'root' ]; then
+    echo "=== Вы пользователь '$USER', необходимо запустить под пользователем: 'root'!"
+    exit
+fi
+
 
 # ---- Установка пакетов --------
 
@@ -81,20 +91,29 @@ fi
 
 #========================================================
 
-echo
-echo "=== Подготовка самоподписанных SSL сертификатов для IP  ===" 
-sudo mkdir /etc/ssl/nginx
-mkdir ~/SSL
-
-echo
-read -p "=== Введите IP адрес сервера VPS: " domain_ip
-
-openssl req -newkey rsa:2048 -sha256 -nodes -keyout $domain_ip.self.key -x509 -days 365 -out $domain_ip.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=$domain_ip"
-
-sudo mv $domain_ip.self.key /etc/ssl/nginx/
-sudo mv $domain_ip.self.crt /etc/ssl/nginx/
+#echo
+#echo "=== Подготовка самоподписанных SSL сертификатов для IP  ===" 
+#sudo mkdir /etc/ssl/nginx
+#mkdir ~/SSL
+#
+#echo
+#read -p "=== Введите IP адрес сервера VPS: " domain_ip
+#
+#openssl req -newkey rsa:2048 -sha256 -nodes -keyout $domain_ip.self.key -x509 -days 365 -out $domain_ip.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=$domain_ip"
+#
+#sudo mv $domain_ip.self.key /etc/ssl/nginx/
+#sudo mv $domain_ip.self.crt /etc/ssl/nginx/
 
 #=======================================================
+
+echo
+echo "=== Копирование скриптов в каталог пользователя '$HOME' ==="
+
+git clone https://github.com/Marat2010/Aiogram3
+wait
+
+#=======================================================
+
 echo 
 read -p "=== Введите название проекта (папки): " proj_name
 mkdir ~/$proj_name
