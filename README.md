@@ -4,7 +4,7 @@
 ---
 
 ## Система управления ботами (СУБотами)(manageBots) 
-### (Aiogram3+Webhook+SSL на VPS/VDS): 
+### (FastAPI+Aiogram3+Webhook+SSL на VPS/VDS): 
 
 <u>***!!! Осторожно, скрипты могут затереть ваши файлы!!!***</u>  
 <u>***Предполагается установка на вновь созданный сервер!***</u>  
@@ -18,7 +18,7 @@
 
 2. Скачиваем первый скрипт, выполним команду:  
     ```
-    wget -O ./0_prepare.sh https://raw.githubusercontent.com/Marat2010/manageBots/secure/0_prepare.sh && chmod +x 0_prepare.sh && ./0_prepare.sh
+    wget -O ./0_prepare.sh https://raw.githubusercontent.com/Marat2010/manageBots/master/Scripts/0_prepare.sh && chmod +x 0_prepare.sh && ./0_prepare.sh
     ```
 
 ---
