@@ -107,9 +107,9 @@ fi
 #=======================================================
 
 echo
-echo "=== Копирование скриптов в каталог пользователя '$HOME' ==="
+echo "=== Копирование проекта в каталог пользователя '$HOME' ==="
 
-git clone https://github.com/Marat2010/Aiogram3
+git clone https://github.com/Marat2010/manageBots
 wait
 
 #=======================================================
@@ -118,6 +118,8 @@ echo
 read -p "=== Введите название проекта (папки): " proj_name
 mkdir ~/$proj_name
 cd ~/$proj_name
+
+echo "PROJECT_NAME='$proj_name'" | sudo tee -a /etc/environment
 
 echo
 echo "=== Установка вирт. окружения в папке $proj_name ==="
@@ -128,10 +130,12 @@ echo "=== Активация вирт.окружения ==="
 source venv/bin/activate
 
 echo
-echo "=== Установка Aiogram 3.10.0 ==="
+echo "=== Установка Aiogram 3.10.0 ... from requirements.txt ==="
 pip3 install --upgrade pip
-pip install aiogram==3.10.0
-pip freeze > requirements.txt
+pip install -r requirements.txt
+
+#pip install aiogram==3.10.0
+#pip freeze > requirements.txt
 
 #=======================================================
 
