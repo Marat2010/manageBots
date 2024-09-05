@@ -115,7 +115,7 @@ wait
 #=======================================================
 
 echo 
-read -p "=== Введите название проекта, папки (manageBots): " proj_name
+read -p "=== Введите название проекта папки, если хотите поменять (manageBots): " proj_name
 
 if [ -z $proj_name ]
 then
@@ -161,7 +161,7 @@ read -p "=== Запустить Менеджер ботов (manageBots) как 
 
 if [ "$mb_service" == "y" ]
 then
-    sudo cp /$HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
+    sudo cp /$HOME/$proj_name/ManageBots.service /lib/systemd/system/ManageBots.service
     sudo systemctl daemon-reload
     sudo systemctl enable ManageBots.service
     sudo systemctl start ManageBots.service
