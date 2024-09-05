@@ -23,14 +23,16 @@ create_tables()
 # Предварительная подготовка Nginx сервера:
 # 1. Подготовка самоподписанных ssl сертификатов
 # 2. Предварительная подготовка Nginx конфигурации
-# prepare_Nginx()  # Раскомментировать при первом запуске
+prepare_Nginx()  # Раскомментировать при первом запуске
 
 
 # ========== FastAPI ================
 app = FastAPI(
-    title='API - Менеджер ботов',
+    title='Система управления ботами - СУБота©',
+    description='API - Менеджер ботов СУБота©️ (manageBots)',
+    # title='API - Менеджер ботов',
+    # description='Система управления ботами - СУБота&#169;',
     # logging=fastapi_logger
-    # description='API - Управления ботами',
 )
 
 app.include_router(bots.router)
@@ -44,6 +46,7 @@ logging.info(f"{WEBHOOK_SSL_KEY= }")
 
 # ==================================================
 # ==================================================
+# title = 'Система управления ©️ботами\n - \U000000A9СУБота©️ &#169;',
 # # ========== FastAPI Logs================
 # logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)

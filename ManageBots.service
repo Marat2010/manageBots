@@ -10,7 +10,7 @@ Restart=on-failure
 
 EnvironmentFile=/etc/environment
 
-ExecStart=/bin/bash -c 'cd /$HOME/$PROJECT_NAME/ && source venv/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
+ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
 
 [Install]
 WantedBy=multi-user.target

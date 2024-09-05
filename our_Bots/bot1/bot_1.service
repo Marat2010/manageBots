@@ -10,7 +10,7 @@ Restart=on-failure
 
 EnvironmentFile=/etc/environment
 
-ExecStart=/bin/bash -c 'cd /$HOME/$PROJECT_NAME/ && source venv/bin/activate && ./our_Bots/bot1/bot_1.py'
+ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && ./our_Bots/bot1/bot_1.py'
 
 [Install]
 WantedBy=multi-user.target
