@@ -8,7 +8,7 @@
 #cd /home/marat/PycharmProjects/manageBots/
 
 #cd $HOME/manageBots
-cd $HOME/$PROJECT_NAME
+cd "$HOME/$PROJECT_NAME"
 source .venv/bin/activate
 
 uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload
