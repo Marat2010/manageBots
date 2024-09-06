@@ -146,17 +146,25 @@ wait
 #=======================================================
 
 echo 
-read -p "=== Введите название проекта папки, если хотите поменять (manageBots): " proj_name
+read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter): " proj_name
 
-if [ -z $proj_name ]
+if [ -z "$proj_name" ]
 then
     proj_name="manageBots"
+    printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
+else
+    printf "\n=== Переносим проект 'manageBots' в -> %s \n" "'$proj_name'"
+    mv -fv manageBots $proj_name
 fi
 
-mkdir ~/$proj_name
-cd ~/$proj_name
+cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; }
+pwd
+ls -al
 
+#=======================================================
+printf "\n\n=== Установка переменной окружения 'PROJECT_NAME' в ОС ===\n"
 echo "PROJECT_NAME='$proj_name'" | sudo tee -a /etc/environment
+#=======================================================
 
 echo
 echo "=== Установка вирт. окружения в папке $proj_name ==="
@@ -164,7 +172,7 @@ python3 -m venv .venv
 
 echo
 echo "=== Активация вирт.окружения ==="
-source venv/bin/activate
+source .venv/bin/activate
 
 echo
 echo "=== Установка из requirements.txt ==="
@@ -185,12 +193,13 @@ echo "=== Для второго бота:  our_Bots/bot2/.env_bot     ==="
 echo "====================================================="
 read -p "=== Если прочитали, для продолжения нажмите enter ==="
 
+#=======================================================
 
 echo "=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===" 
 echo 
-read -p "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " yes_service
+read -p "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " run_service
 
-if [ "$yes_service" == "y" ]
+if [ "$run_service" == "y" ]
 then
     echo "
     [Unit]
@@ -198,7 +207,7 @@ then
     After=multi-user.target
      
     [Service]
-    WorkingDirectory=/$HOME/$PROJECT_NAME/
+    WorkingDirectory=/$HOME/$proj_name/
     User=root
     Group=root
     Type=idle
@@ -207,9 +216,9 @@ then
     #EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
-    #ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && /.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
+    #ExecStart=/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && /.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
 
-    ExecStart=$HOME/$PROJECT_NAME/Run_manage.sh
+    ExecStart=$HOME/$proj_name/Run_manage.sh
 
     [Install]
     WantedBy=multi-user.target
@@ -224,6 +233,8 @@ fi
 
 #=======================================================
 #=======================================================
+#=======================================================
+#ls -al | grep $proj_name
 #=======================================================
 #  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
 #  sed 's/root/# root/' /etc/ftpusers
