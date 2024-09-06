@@ -4,14 +4,10 @@
 #Запуск бота:
 #=========================================
 
-
-#cd /home/marat/PycharmProjects/manageBots/
-
 cd $HOME/$PROJECT_NAME
 source .venv/bin/activate
 
 python ./our_Bots/bot1/bot_1.py 
-#python ./our_Bots/bot1/config_bots.py
 
 
 #=========================================
@@ -22,5 +18,6 @@ python ./our_Bots/bot1/bot_1.py
 #sudo systemctl enable bot_1.service
 #sudo systemctl start bot_1.service
 #=========================================
-
+#cd /home/marat/PycharmProjects/manageBots/
+#=========================================
 

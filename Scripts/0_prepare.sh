@@ -11,7 +11,7 @@ fi
 
 # ===== Смена пароля root-а =====
 echo
-read -p "=== Сменить у пользователя 'root' пароль? [y/N] - по умолчанию нет(Enter): " change_passwd_root
+read -rp "=== Сменить у пользователя 'root' пароль? [y/N] - по умолчанию нет(Enter): " change_passwd_root
 
 if [ "$change_passwd_root" == "y" ]
 then
@@ -23,30 +23,30 @@ echo "===== Установка пакетов ====="
 apt update
 
 echo
-read -p "=== Установить FTP сервер? [y/N] - по умолчанию нет(Enter): " confirm
+read -rp "=== Установить FTP сервер? [y/N] - по умолчанию нет(Enter): " confirm
 if [ "$confirm" == "y" ]; then
     echo "=== Установка FTP сервера ==="
     echo "=== Инструкция: https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-ftp-server-na-ubuntu ==="
     apt -y install vsftpd
-    systemctl enable vsftpd
+    systemctl enable vsftpd.service
 fi
 
 echo
-read -p "=== Установить Midnight Commander? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Установить Midnight Commander? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
     echo "=== Установка Midnight Commander ==="
     apt -y install mc
 fi
 
 echo
-read -p "=== Установить Lynx? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Установить Lynx? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
     echo "=== Установка Lynx ==="
     apt -y install lynx
 fi
 
 echo
-read -p "=== Установить sqlite3 для терминала? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Установить sqlite3 для терминала? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
     apt install sqlite3
     echo
@@ -55,11 +55,11 @@ if [ "$confirm" == "y" ]; then
     echo "=== # sqlite3 DB/mb.sqlite3 - подключение к БД            ==="
     echo "=== sqlite> select * from bots; - просмотр таблицы 'bots' ==="
     echo "============================================================="
-    read -p "=====  Если прочитали, нажмите enter для продолжения ===== "
+    read -rp "=====  Если прочитали, нажмите enter для продолжения ===== "
 fi
 
 echo
-read -p "=== Установить прокси веб-сервер Nginx? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Установить прокси веб-сервер Nginx? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
     echo "=== Установка пакета Nginx ==="
     sudo apt -y install nginx
@@ -67,7 +67,7 @@ if [ "$confirm" == "y" ]; then
 fi
 
 echo
-read -p "=== Установить модуль VENV (python3-venv)? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Установить модуль VENV (python3-venv)? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
   echo "=== Установка модуля VENV (python3-venv) ==="
   apt -y install python3-venv
@@ -77,58 +77,56 @@ echo
 echo "=== FTP: Настройка сервера ==="
 cp /etc/vsftpd.conf /etc/vsftpd.conf.original
 
-echo "listen=YES" > /etc/vsftpd.conf
-echo "listen_ipv6=NO" >> /etc/vsftpd.conf
-echo "anonymous_enable=NO" >> /etc/vsftpd.conf
-echo "local_enable=YES" >> /etc/vsftpd.conf
-echo "write_enable=YES" >> /etc/vsftpd.conf
-echo "local_umask=022" >> /etc/vsftpd.conf
-echo "dirmessage_enable=YES" >> /etc/vsftpd.conf
-echo "use_localtime=YES" >> /etc/vsftpd.conf
-echo "xferlog_enable=YES" >> /etc/vsftpd.conf
-echo "connect_from_port_20=YES" >> /etc/vsftpd.conf
-echo "xferlog_file=/var/log/vsftpd.log" >> /etc/vsftpd.conf
-echo "xferlog_std_format=YES" >> /etc/vsftpd.conf
-echo "chroot_local_user=YES" >> /etc/vsftpd.conf
-echo "allow_writeable_chroot=YES" >> /etc/vsftpd.conf
-echo "local_root=/" >> /etc/vsftpd.conf
-echo "pam_service_name=vsftpd" >> /etc/vsftpd.conf
-echo "#userlist_enable=YES" >> /etc/vsftpd.conf
-echo "userlist_file=/etc/vsftpd.userlist" >> /etc/vsftpd.conf
-echo "#userlist_deny=NO" >> /etc/vsftpd.conf
-echo "userlist_deny=YES" >> /etc/vsftpd.conf
-echo "" >> /etc/vsftpd.conf
+echo "
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_file=/var/log/vsftpd.log
+xferlog_std_format=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+local_root=/
+pam_service_name=vsftpd
+#userlist_enable=YES
+userlist_file=/etc/vsftpd.userlist
+#userlist_deny=NO
+userlist_deny=YES
 
-echo
-echo "=== FTP: Формирование SSL-сертификата  ==="
+rsa_cert_file=/etc/ssl/private/vsftpd.pem
+rsa_private_key_file=/etc/ssl/private/vsftpd.pem
+ssl_enable=YES
+" >> /etc/vsftpd.conf
+
+printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
-
-echo "rsa_cert_file=/etc/ssl/private/vsftpd.pem" >> /etc/vsftpd.conf
-echo "rsa_private_key_file=/etc/ssl/private/vsftpd.pem" >> /etc/vsftpd.conf
-echo "ssl_enable=YES" >> /etc/vsftpd.conf
-echo "" >> /etc/vsftpd.conf
-
 
 #======================================================
 
 echo
-read -p "=== Разрешить доступ root-у по ftp? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Разрешить доступ root-у по ftp? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
-  cp /etc/ftpusers /etc/ftpusers_$(date +%d-%m-%Y_%T)
+  cp /etc/ftpusers /etc/ftpusers_"$(date +%d-%m-%Y_%T)"
   sed -i 's/root/# root/' /etc/ftpusers
   cat /etc/ftpusers
   echo
   echo "========================================================================================="
   echo "==== Для отмены доступа root-a по ftp раскомментируйте '# root' в файле /etc/ftpusers ==="
-  echo "====        И перезапустите: systemctl restart vsftpd                                 ==="
+  echo "====        И перезапустите: systemctl restart vsftpd.service                                 ==="
   echo "========================================================================================="
-  read  -p "=====    Если прочитали, для продолжения нажмите enter               ===== "
+  read  -rp "=====    Если прочитали, для продолжения нажмите enter               ===== "
 fi
 
 #======================================================
 
 echo
-read -p "=== Отключить dhclient6? [y/N] - по умолчанию нет(Enter) " confirm
+read -rp "=== Отключить dhclient6? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
   echo
   echo "=== Отключение dhclient6 ==="
@@ -176,7 +174,7 @@ source .venv/bin/activate
 
 echo
 echo "=== Установка из requirements.txt ==="
-pip3 install --upgrade pip
+pip install --upgrade pip
 pip install -r requirements.txt
 
 echo
@@ -191,23 +189,22 @@ echo "=== Для приложения файл: app/.env_manage          ==="
 echo "=== Для первого бота:  our_Bots/bot1/.env_bot     ==="
 echo "=== Для второго бота:  our_Bots/bot2/.env_bot     ==="
 echo "====================================================="
-read -p "=== Если прочитали, для продолжения нажмите enter ==="
+read -rp "=== Если прочитали, для продолжения нажмите enter ==="
 
 #=======================================================
 
 echo "=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===" 
 echo 
-read -p "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " run_service
+read -rp "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " run_service
 
-if [ "$run_service" == "y" ]
-then
+if [ "$run_service" == "y" ]; then
     echo "
     [Unit]
     Description=Manage Bots service
     After=multi-user.target
      
     [Service]
-    WorkingDirectory=/$HOME/$proj_name/
+    WorkingDirectory=$HOME/$proj_name/
     User=root
     Group=root
     Type=idle
@@ -222,13 +219,21 @@ then
 
     [Install]
     WantedBy=multi-user.target
-    " > /$HOME/$proj_name/ManageBots.service
+    " > "/$HOME/$proj_name/ManageBots.service"
 
-    sudo cp /$HOME/$proj_name/ManageBots.service /lib/systemd/system/ManageBots.service
+    sudo cp "/$HOME/$proj_name/ManageBots.service" /lib/systemd/system/ManageBots.service
     sudo systemctl daemon-reload
     sudo systemctl enable ManageBots.service
     sudo systemctl start ManageBots.service
 fi
+
+printf "\n\n====== Информация для проверки =========================\n"
+public_ip="$(wget -q -O - ipinfo.io/ip)"
+
+printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
+printf "\n=== API - Менеджер ботов (swagger): http://%s:12000/docs ===  \n" "$public_ip"
+printf "\n=== Проверка токена: https://api.telegram.org/bot661....:AA...JQ/getWebhookInfo ===  \n"
+printf "\n\==========================================================\n"
 
 
 #=======================================================

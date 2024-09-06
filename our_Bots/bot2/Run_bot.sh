@@ -5,11 +5,10 @@
 #=========================================
 
 
-cd /home/marat/PycharmProjects/manageBots/
+cd $HOME/$PROJECT_NAME
 source .venv/bin/activate
 
-#python ./our_Bots/bot2/bot_2.py
-python ./our_Bots/bot2/config_bots.py
+python ./our_Bots/bot2/bot_2.py 
 
 
 #=========================================
@@ -20,5 +19,6 @@ python ./our_Bots/bot2/config_bots.py
 #sudo systemctl enable bot_2.service
 #sudo systemctl start bot_2.service
 #=========================================
-
+#cd /home/marat/PycharmProjects/manageBots/
+#=========================================
 
