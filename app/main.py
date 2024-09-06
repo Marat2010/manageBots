@@ -37,11 +37,11 @@ app = FastAPI(
 
 app.include_router(bots.router)
 
-logging.info(f"=== Настройки: ===")
-logging.info(f"{BASE_WEBHOOK_URL= }")
-logging.info(f"{WEBHOOK_SSL_CERT= }")
-logging.info(f"{WEBHOOK_SSL_KEY= }")
-[logging.info(f"{param}") for param in config_Manage]
+logging.warning(f"=== Настройки: ===")
+logging.warning(f"{BASE_WEBHOOK_URL= }")
+logging.warning(f"{WEBHOOK_SSL_CERT= }")
+logging.warning(f"{WEBHOOK_SSL_KEY= }")
+[logging.warning(f"{param}") for param in config_Manage]
 
 
 # ==================================================

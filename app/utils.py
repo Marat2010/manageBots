@@ -21,14 +21,14 @@ WEBHOOK_PATH = config_Manage.WEBHOOK_PATH
 WEBHOOK_SECRET = config_Manage.WEBHOOK_SECRET
 
 # ========= LOGS =============================
-LOG_FILE = config_Manage.LOG_MANAGE
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.INFO)
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] [%(module)s] [%(funcName)s]: %(message)s',
-    handlers=[logging.FileHandler(LOG_FILE, mode='a'), stream_handler])  # mode='w'
+# LOG_FILE = config_Manage.LOG_MANAGE
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging.INFO)
+#
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s [%(levelname)s] [%(module)s] [%(funcName)s]: %(message)s',
+#     handlers=[logging.FileHandler(LOG_FILE, mode='a'), stream_handler])  # mode='w'
 # ===========================================
 
 
@@ -47,19 +47,19 @@ async def set_token(active: bool, token: str) -> User | TelegramUnauthorizedErro
         bot_info = await new_bot.get_me()
         logging.info(f"\n\n  === Бот Инфо: ===\n{bot_info}\n")
     except TelegramUnauthorizedError as e:
-        logging.info(f"\n\n  === Неверный {token= }, Ошибка: '{e}' ===\n")
+        logging.warning(f"\n\n  === Неверный {token= }, Ошибка: '{e}' ===\n")
         raise HTTPException(status_code=422,
                             detail=f"=== Неверный {token= }, Ошибка: '{e}' ===")
     except TokenValidationError as e:
-        logging.info(f"\n\n  === Токен не прошел валидацию {token= }, Ошибка: '{e}' ===\n")
+        logging.warning(f"\n\n  === Токен не прошел валидацию {token= }, Ошибка: '{e}' ===\n")
         raise HTTPException(status_code=422,
                             detail=f"=== Токен не прошел валидацию {token= }, Ошибка: '{e}' ===")
     except TelegramNotFound as e:
-        logging.info(f"\n\n  === Вебхук не установлен {token= }, Ошибка: '{e}' ===\n")
+        logging.warning(f"\n\n  === Вебхук не установлен {token= }, Ошибка: '{e}' ===\n")
         raise HTTPException(status_code=422,
                             detail=f"=== Вебхук не установлен {token= }, Ошибка: '{e}' ===")
     except Exception as e:
-        logging.info(f"\n\n  === Неизвестная ошибка! {token= }, Ошибка: '{e}' ===\n")
+        logging.error(f"\n\n  === Неизвестная ошибка! {token= }, Ошибка: '{e}' ===\n")
         raise HTTPException(status_code=422,
                             detail=f"=== Неизвестная ошибка! {token= }, Ошибка: '{e}' ===")
     await new_bot.delete_webhook(drop_pending_updates=True)
@@ -84,15 +84,15 @@ async def set_token(active: bool, token: str) -> User | TelegramUnauthorizedErro
                     f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}{token}",
                     secret_token=WEBHOOK_SECRET)
         except TelegramBadRequest as e:
-            logging.info(f"\n\n  === Возможно недопустимый символ (@,$,&,..)."
-                         f" Разрешены только символы A-Z, a-z, 0-9, _и -."
-                         f" {WEBHOOK_SECRET= }, Ошибка: '{e}' ===\n")
+            logging.error(f"\n\n  === Возможно недопустимый символ (@,$,&,..)."
+                          f" Разрешены только символы A-Z, a-z, 0-9, _и -."
+                          f" {WEBHOOK_SECRET= }, Ошибка: '{e}' ===\n")
             raise HTTPException(status_code=422,
                                 detail=f"=== Возможно недопустимый символ (@,$,&,..)."
                                        f" Разрешены только символы A-Z, a-z, 0-9, _и -."
                                        f" {WEBHOOK_SECRET= }, Ошибка: '{e}' ===")
         except Exception as e:
-            logging.info(f"\n\n  === ! Неизвестная ошибка ! {token= }, Ошибка: '{e}' ===\n")
+            logging.error(f"\n\n  === ! Неизвестная ошибка ! {token= }, Ошибка: '{e}' ===\n")
             raise HTTPException(status_code=422,
                                 detail=f"=== Неизвестная ошибка! {token= }, Ошибка: '{e}' ===")
 
@@ -119,7 +119,7 @@ def change_state_bot(bot: BotsOrm) -> User:
         # === # Добавление бота в конфигурацию Nginx ===
         bot_proc = activate_bot_nginx(bot)  # Добавление бота в конфигурацию Nginx
         if bot_proc.returncode == 1:  # В случае ошибки
-            logging.info(f"\n=== ERROR: ===\n{bot_proc.stderr}")
+            logging.error(f"\n=== ERROR: ===\n{bot_proc.stderr}")
             raise HTTPException(status_code=422,
                                 detail=f"=== Бот НЕДОБАВЛЕН в конфигурацию Nginx !!!\n"
                                        f" Ошибки: '{bot_proc.stderr}' ===")
@@ -134,7 +134,7 @@ def change_state_bot(bot: BotsOrm) -> User:
         # === # Удаление бота из конфигурации Nginx ===
         bot_proc = activate_bot_nginx(bot)  # Удаление бота из конфигурации Nginx
         if bot_proc.returncode == 1:  # В случае ошибки
-            logging.info(f"\n=== ERROR: ===\n{bot_proc.stderr}")
+            logging.error(f"\n=== ERROR: ===\n{bot_proc.stderr}")
             raise HTTPException(status_code=422,
                                 detail=f"=== Не УДАЛОСЬ удалить бота из конфигурации Nginx !!!\n"
                                        f" Ошибки: '{bot_proc.stderr}' ===")

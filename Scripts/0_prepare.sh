@@ -1,51 +1,77 @@
 #!/bin/bash
 
-# === Скрипт для предварительной подготовки сервера VPS ===
+# ===== Скрипт для предварительной подготовки сервера VPS =====
 
 echo "=== !!! Выполнять под пользователем root !!! ==="
 
-if [ $USER != 'root' ]; then
+if [ "$USER" != 'root' ]; then
     echo "=== Вы пользователь '$USER', необходимо запустить под пользователем: 'root'!"
-    exit
+    exit 1
 fi
 
+# ===== Смена пароля root-а =====
+echo
+read -p "=== Сменить у пользователя 'root' пароль? [y/N] - по умолчанию нет(Enter): " change_passwd_root
 
-# ---- Установка пакетов --------
+if [ "$change_passwd_root" == "y" ]
+then
+    passwd root
+fi
+
+echo "===== Установка пакетов ====="
 
 apt update
-echo
-echo "=== Установка FTP сервера ==="
-echo "=== Инструкция: https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-ftp-server-na-ubuntu ==="
-apt -y install vsftpd
-systemctl enable vsftpd
 
 echo
-echo "=== Установка Midnight Commander ==="
-apt -y install mc
-echo
+read -p "=== Установить FTP сервер? [y/N] - по умолчанию нет(Enter): " confirm
+if [ "$confirm" == "y" ]; then
+    echo "=== Установка FTP сервера ==="
+    echo "=== Инструкция: https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-ftp-server-na-ubuntu ==="
+    apt -y install vsftpd
+    systemctl enable vsftpd
+fi
 
 echo
-echo "=== Установка Lynx ==="
-apt -y install lynx
-echo
+read -p "=== Установить Midnight Commander? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    echo "=== Установка Midnight Commander ==="
+    apt -y install mc
+fi
 
 echo
-echo "============================================================="
-echo "=====      Установка sqlite3 для терминала              ====="
-echo "=== # sqlite3 DB/mb.sqlite3 - подключение к БД            ==="
-echo "=== sqlite> select * from bots; - просмотр таблицы 'bots' ==="
-echo "============================================================="
-read -p "=====  Если прочитали, нажмите enter для продолжения ===== "
-apt install sqlite3
-echo
-
-echo "=== Установка пакета Nginx ==="
-sudo apt -y install nginx
-sudo systemctl enable nginx
+read -p "=== Установить Lynx? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    echo "=== Установка Lynx ==="
+    apt -y install lynx
+fi
 
 echo
-echo "=== Установка модуля VENV (python3-venv) ==="
-apt -y install python3-venv
+read -p "=== Установить sqlite3 для терминала? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    apt install sqlite3
+    echo
+    echo "============================================================="
+    echo "=====      Установлен sqlite3 для терминала              ====="
+    echo "=== # sqlite3 DB/mb.sqlite3 - подключение к БД            ==="
+    echo "=== sqlite> select * from bots; - просмотр таблицы 'bots' ==="
+    echo "============================================================="
+    read -p "=====  Если прочитали, нажмите enter для продолжения ===== "
+fi
+
+echo
+read -p "=== Установить прокси веб-сервер Nginx? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    echo "=== Установка пакета Nginx ==="
+    sudo apt -y install nginx
+    sudo systemctl enable nginx
+fi
+
+echo
+read -p "=== Установить модуль VENV (python3-venv)? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+  echo "=== Установка модуля VENV (python3-venv) ==="
+  apt -y install python3-venv
+fi
 
 echo
 echo "=== FTP: Настройка сервера ==="
@@ -82,27 +108,32 @@ echo "rsa_private_key_file=/etc/ssl/private/vsftpd.pem" >> /etc/vsftpd.conf
 echo "ssl_enable=YES" >> /etc/vsftpd.conf
 echo "" >> /etc/vsftpd.conf
 
-systemctl restart vsftpd
-echo
-echo "==========================================================================="
-echo "==== Для доступа root-a по ftp закоментируйте его в файле /etc/ftpusers ==="
-echo "====        И перезапустите: systemctl restart vsftpd                   ==="
-echo "==========================================================================="
-read  -p "=====    Если прочитали, для продолжения нажмите enter               ===== "
+
+#======================================================
 
 echo
-echo "=== Отключение dhclient6 ==="
-systemctl stop dhclient6.service
-systemctl disable dhclient6.service
+read -p "=== Разрешить доступ root-у по ftp? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+  cp /etc/ftpusers /etc/ftpusers_$(date +%d-%m-%Y_%T)
+  sed -i 's/root/# root/' /etc/ftpusers
+  cat /etc/ftpusers
+  echo
+  echo "========================================================================================="
+  echo "==== Для отмены доступа root-a по ftp раскомментируйте '# root' в файле /etc/ftpusers ==="
+  echo "====        И перезапустите: systemctl restart vsftpd                                 ==="
+  echo "========================================================================================="
+  read  -p "=====    Если прочитали, для продолжения нажмите enter               ===== "
+fi
 
-# ---- Смена пароля root-а --------
+#======================================================
 
-echo 
-read -p "=== Сменить у пользователя 'root' пароль? [y/N]: " change_passwd_root
-
-if [ "$change_passwd_root" == "y" ]
-then
-    passwd root
+echo
+read -p "=== Отключить dhclient6? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+  echo
+  echo "=== Отключение dhclient6 ==="
+  systemctl stop dhclient6.service
+  systemctl disable dhclient6.service
 fi
 
 #========================================================
@@ -157,10 +188,33 @@ read -p "=== Если прочитали, для продолжения нажм
 
 echo "=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===" 
 echo 
-read -p "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " mb_service
+read -p "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " yes_service
 
-if [ "$mb_service" == "y" ]
+if [ "$yes_service" == "y" ]
 then
+    echo "
+    [Unit]
+    Description=Manage Bots service
+    After=multi-user.target
+     
+    [Service]
+    WorkingDirectory=/$HOME/$PROJECT_NAME/
+    User=root
+    Group=root
+    Type=idle
+    Restart=on-failure
+
+    #EnvironmentFile=/etc/environment
+    Environment='PROJECT_NAME=manageBots'
+
+    #ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && /.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
+
+    ExecStart=$HOME/$PROJECT_NAME/Run_manage.sh
+
+    [Install]
+    WantedBy=multi-user.target
+    " > /$HOME/$proj_name/ManageBots.service
+
     sudo cp /$HOME/$proj_name/ManageBots.service /lib/systemd/system/ManageBots.service
     sudo systemctl daemon-reload
     sudo systemctl enable ManageBots.service
@@ -170,6 +224,9 @@ fi
 
 #=======================================================
 #=======================================================
+#=======================================================
+#  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
+#  sed 's/root/# root/' /etc/ftpusers
 #=======================================================
 #sudo cp /$HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
 #sudo systemctl daemon-reload

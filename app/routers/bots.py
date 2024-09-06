@@ -35,6 +35,7 @@ def get_bots(db_session: Session = Depends(get_db)) -> List[SBot]:
 def get_by_id(idpk, db_session: Session = Depends(get_db)) -> SBot:
     bot_model = db_session.query(BotsOrm).filter(BotsOrm.id == idpk).first()
     if bot_model is None:
+        logging.warning(f"\n\n  === Бот не найден {idpk= } ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
     bot = SBot.model_validate(bot_model)
     return bot
@@ -49,7 +50,7 @@ def update_by_id(idpk, bot: SBotUpd = Depends(),
         db_session.query(BotsOrm).filter(BotsOrm.id == idpk).update(data)
     # except exc.SQLAlchemyError as e:
     except exc.IntegrityError as e:
-        logging.info(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
+        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
         db_session.rollback()
         raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
 
@@ -82,7 +83,7 @@ def add_bot(bot: SBotAdd = Depends(), db_session: Session = Depends(get_db)) -> 
         db_session.flush()
         db_session.commit()
     except exc.IntegrityError as e:
-        logging.info(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
+        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
         db_session.rollback()
         raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
 
@@ -101,6 +102,7 @@ def get_by_port(bot: SBotGetByPort = Depends(),
     data = bot.model_dump()
     bot_model = db_session.query(BotsOrm).filter(BotsOrm.web_server_port == data['web_server_port']).first()
     if bot_model is None:
+        logging.warning(f"\n\n  === Бот не найден {data['web_server_port']= } ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
     bot = SBot.model_validate(bot_model)
     return bot
@@ -132,6 +134,7 @@ def get_by_token(bot: SBotGetByToken = Depends(),
     data = bot.model_dump()
     bot_model = db_session.query(BotsOrm).filter(BotsOrm.token_tg == data['token_tg']).first()
     if bot_model is None:
+        logging.warning(f"\n\n  === Бот не найден {data['token_tg']= } ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
     bot = SBot.model_validate(bot_model)
     return bot
@@ -157,6 +160,7 @@ def delete_by_token(token_tg, db_session: Session = Depends(get_db)) -> SBotDel:
 # ================================================
 def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
     if bot_model is None:
+        logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = data['active']
@@ -168,7 +172,7 @@ def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db
         db_session.commit()
     except exc.IntegrityError as e:
         db_session.rollback()
-        logging.info(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
+        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
         raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
     bot = SBot.model_validate(bot_model)
     return bot  # Можно сразу 'SBot.model_validate(bot_model)'
@@ -176,6 +180,7 @@ def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db
 
 def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
     if bot_model is None:
+        logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = ActiveBot.No  # Необходимо, чтобы отключить вебхук
