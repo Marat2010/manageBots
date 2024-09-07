@@ -141,6 +141,8 @@ echo "=== Копирование проекта в каталог пользов
 git clone https://github.com/Marat2010/manageBots
 wait
 
+cp -R manageBots/Scripts/.config ~/
+
 #=======================================================
 
 echo 
