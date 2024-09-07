@@ -102,7 +102,7 @@ userlist_deny=YES
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
 rsa_private_key_file=/etc/ssl/private/vsftpd.pem
 ssl_enable=YES
-" >> /etc/vsftpd.conf
+" > /etc/vsftpd.conf
 
 printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
@@ -141,7 +141,7 @@ echo "=== Копирование проекта в каталог пользов
 git clone https://github.com/Marat2010/manageBots
 wait
 
-cp -R manageBots/Scripts/.config ~/
+cp -R manageBots/Scripts/.config/mc ~/mc/
 
 #=======================================================
 
@@ -212,7 +212,7 @@ if [ "$run_service" == "y" ]; then
     Type=idle
     Restart=on-failure
 
-    #EnvironmentFile=/etc/environment
+    EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
     #ExecStart=/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && /.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
@@ -221,9 +221,9 @@ if [ "$run_service" == "y" ]; then
 
     [Install]
     WantedBy=multi-user.target
-    " > "/$HOME/$proj_name/ManageBots.service"
+    " > "$HOME/$proj_name/ManageBots.service"
 
-    sudo cp "/$HOME/$proj_name/ManageBots.service" /lib/systemd/system/ManageBots.service
+    sudo cp "$HOME/$proj_name/ManageBots.service" /lib/systemd/system/ManageBots.service
     sudo systemctl daemon-reload
     sudo systemctl enable ManageBots.service
     sudo systemctl start ManageBots.service
@@ -246,7 +246,7 @@ printf "\n==========================================================\n"
 #  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
 #  sed 's/root/# root/' /etc/ftpusers
 #=======================================================
-#sudo cp /$HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
+#sudo cp $HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
 #sudo systemctl daemon-reload
 #sudo systemctl enable ManageBots.service
 #sudo systemctl start ManageBots.service

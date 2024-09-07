@@ -27,14 +27,15 @@ if [ "$run_service" == "y" ]; then
     Restart=on-failure
 
     EnvironmentFile=/etc/environment
+    Environment='PROJECT_NAME=manageBots'
 
     ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && ./our_Bots/bot$number/Run_bot.sh'
 
     [Install]
     WantedBy=multi-user.target
-    " > "/$HOME/$PROJECT_NAME/our_Bots/bot$number/bot_$number.service"
+    " > "$HOME/$PROJECT_NAME/our_Bots/bot$number/bot_$number.service"
 
-    sudo cp "/$HOME/$PROJECT_NAME/our_Bots/bot$number/bot_$number.service" "/lib/systemd/system/bot_$number.service"
+    sudo cp "$HOME/$PROJECT_NAME/our_Bots/bot$number/bot_$number.service" "/lib/systemd/system/bot_$number.service"
 
     sudo systemctl daemon-reload
     sudo systemctl enable bot_"$number".service
