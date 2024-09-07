@@ -13,6 +13,8 @@
 
 #if [ ! -f "/etc/ssl/nginx/$1.self.crt" ]; then
   printf "\n=== Формируем самоподписанные сертификаты и ключи ===\n"
+#  openssl genrsa -out webhook_pkey.pem 2048
+  openssl genrsa -out "$1".self.key 2048
   openssl req -newkey rsa:2048 -sha256 -nodes -keyout /etc/ssl/nginx/"$1".self.key -x509 -days 365 -out /etc/ssl/nginx/"$1".self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Mara/CN='$1'"
 #fi
 
@@ -38,9 +40,17 @@
 #================================================
 #================================================
 
-openssl x509 -inform der -in YOURDER.der -out YOURPEM.pem
+#    "last_error_message": "SSL error {error:0A000086:SSL routines::certificate verify failed}",
 
+#openssl genrsa -out webhook_pkey.pem 2048
+#openssl req -new -x509 -days 3650 -key webhook_pkey.pem -out webhook_cert.pem
+
+#------------------
+#openssl x509 -inform der -in YOURDER.der -out YOURPEM.pem
+#================================================
+#================================================
 #============= IF ===================================
+
 ##if [ ! -d "/etc/ssl/nginx" ]; then
 #  printf "\n=== Создаем директорию для SSL сертификатов Nginx ===\n"
 #  sudo mkdir -pv /etc/ssl/nginx

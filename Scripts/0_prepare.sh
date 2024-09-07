@@ -233,7 +233,7 @@ public_ip="$(wget -q -O - ipinfo.io/ip)"
 printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
 printf "\n=== API - Менеджер ботов (swagger): http://%s:12000/docs ===  \n" "$public_ip"
 printf "\n=== Проверка токена: https://api.telegram.org/bot661....:AA...JQ/getWebhookInfo ===  \n"
-printf "\n\==========================================================\n"
+printf "\n==========================================================\n"
 
 
 #=======================================================
