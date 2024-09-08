@@ -182,8 +182,8 @@ pip install -r requirements.txt
 echo
 echo "=== Подготовка файлов окружения ==="
 mv app/.env_example_manage app/.env_manage
-mv our_Bots/bot1/.env_example_bot our_Bots/bot1/.env_bot
-mv our_Bots/bot2/.env_example_bot our_Bots/bot2/.env_bot
+mv our_Bots/bot_15001/.env_example_bot our_Bots/bot1/.env_bot
+mv our_Bots/bot_15002/.env_example_bot our_Bots/bot2/.env_bot
 echo
 echo "====================================================="
 echo "===   Отредактируйте переменные окружения:        ==="
@@ -204,7 +204,7 @@ if [ -n "$set_ip" ]; then
 fi
 echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
 
-./Scripts/nginx_prepare.sh "$public_ip"
+./Scripts/nginx.sh "$public_ip"
 ./Scripts/ssl.sh "$public_ip"
 
 #=======================================================
