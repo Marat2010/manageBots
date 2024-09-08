@@ -197,8 +197,11 @@ read -rp "=== Если прочитали, для продолжения наж�
 printf "\n=== Предварительная подготовка Nginx конфигурации ===\n"
 public_ip="$(wget -q -O - ipinfo.io/ip)"
 
-read -rp "=== Введите IP адрес сервера VPS:($public_ip - по умолчанию (Enter))" public_ip
+read -rp "=== Введите IP адрес сервера VPS:($public_ip - по умолчанию (Enter))" set_ip
 
+if [ -n "$set_ip" ]; then
+    public_ip=$set_ip
+fi
 echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
 
 ./Scripts/nginx_prepare.sh "$public_ip"
