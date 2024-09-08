@@ -1,6 +1,7 @@
 #!/bin/bash
-
+#==============================================================
 # ===== Скрипт для предварительной подготовки сервера VPS =====
+#==============================================================
 
 echo "=== !!! Выполнять под пользователем root !!! ==="
 
@@ -18,61 +19,20 @@ then
     passwd root
 fi
 
-echo "===== Установка пакетов ====="
-
+#======================================================
+echo "===== Update пакетов ====="
 apt update
 
+#======================================================
 echo
 read -rp "=== Установить FTP сервер? [y/N] - по умолчанию нет(Enter): " confirm
 if [ "$confirm" == "y" ]; then
-    echo "=== Установка FTP сервера ==="
     echo "=== Инструкция: https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-ftp-server-na-ubuntu ==="
     apt -y install vsftpd
     systemctl enable vsftpd.service
 fi
 
-echo
-read -rp "=== Установить Midnight Commander? [y/N] - по умолчанию нет(Enter) " confirm
-if [ "$confirm" == "y" ]; then
-    echo "=== Установка Midnight Commander ==="
-    apt -y install mc
-fi
-
-echo
-read -rp "=== Установить Lynx? [y/N] - по умолчанию нет(Enter) " confirm
-if [ "$confirm" == "y" ]; then
-    echo "=== Установка Lynx ==="
-    apt -y install lynx
-fi
-
-echo
-read -rp "=== Установить sqlite3 для терминала? [y/N] - по умолчанию нет(Enter) " confirm
-if [ "$confirm" == "y" ]; then
-    apt install sqlite3
-    echo
-    echo "============================================================="
-    echo "=====      Установлен sqlite3 для терминала              ====="
-    echo "=== # sqlite3 DB/mb.sqlite3 - подключение к БД            ==="
-    echo "=== sqlite> select * from bots; - просмотр таблицы 'bots' ==="
-    echo "============================================================="
-    read -rp "=====  Если прочитали, нажмите enter для продолжения ===== "
-fi
-
-echo
-read -rp "=== Установить прокси веб-сервер Nginx? [y/N] - по умолчанию нет(Enter) " confirm
-if [ "$confirm" == "y" ]; then
-    echo "=== Установка пакета Nginx ==="
-    sudo apt -y install nginx
-    sudo systemctl enable nginx
-fi
-
-echo
-read -rp "=== Установить модуль VENV (python3-venv)? [y/N] - по умолчанию нет(Enter) " confirm
-if [ "$confirm" == "y" ]; then
-  echo "=== Установка модуля VENV (python3-venv) ==="
-  apt -y install python3-venv
-fi
-
+#-----------------------------------------------------
 echo
 echo "=== FTP: Настройка сервера ==="
 cp /etc/vsftpd.conf /etc/vsftpd.conf.original
@@ -104,11 +64,11 @@ rsa_private_key_file=/etc/ssl/private/vsftpd.pem
 ssl_enable=YES
 " > /etc/vsftpd.conf
 
+#-----------------------------------------------------
 printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
 
-#======================================================
-
+#-----------------------------------------------------
 echo
 read -rp "=== Разрешить доступ root-у по ftp? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
@@ -122,9 +82,45 @@ if [ "$confirm" == "y" ]; then
   echo "========================================================================================="
   read  -rp "=====    Если прочитали, для продолжения нажмите enter               ===== "
 fi
-
 #======================================================
-
+echo
+read -rp "=== Установить Midnight Commander? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    apt -y install mc
+fi
+#======================================================
+echo
+read -rp "=== Установить Lynx? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    apt -y install lynx
+fi
+#======================================================
+echo
+read -rp "=== Установить sqlite3 для терминала? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    apt install sqlite3
+    echo
+    echo "============================================================="
+    echo "=====      Установлен sqlite3 для терминала              ====="
+    echo "=== # sqlite3 DB/mb.sqlite3 - подключение к БД            ==="
+    echo "=== sqlite> select * from bots; - просмотр таблицы 'bots' ==="
+    echo "============================================================="
+    read -rp "=====  Если прочитали, нажмите enter для продолжения ===== "
+fi
+#======================================================
+echo
+read -rp "=== Установить прокси веб-сервер Nginx? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+    sudo apt -y install nginx
+    sudo systemctl enable nginx
+fi
+#======================================================
+echo
+read -rp "=== Установить модуль VENV (python3-venv)? [y/N] - по умолчанию нет(Enter) " confirm
+if [ "$confirm" == "y" ]; then
+  apt -y install python3-venv
+fi
+#======================================================
 echo
 read -rp "=== Отключить dhclient6? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
@@ -135,7 +131,6 @@ if [ "$confirm" == "y" ]; then
 fi
 
 #========================================================
-
 echo
 echo "=== Копирование проекта в каталог пользователя '$PWD' ==="
 git clone https://github.com/Marat2010/manageBots
@@ -144,7 +139,6 @@ wait
 cp -R manageBots/Scripts/.config/mc ~/.config/
 
 #=======================================================
-
 echo 
 read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
 
@@ -164,6 +158,7 @@ ls -al
 #=======================================================
 printf "\n\n=== Установка переменной окружения 'PROJECT_NAME' в ОС ===\n"
 echo "PROJECT_NAME='$proj_name'" | sudo tee -a /etc/environment
+
 #=======================================================
 
 echo
@@ -179,6 +174,7 @@ echo "=== Установка из requirements.txt ==="
 pip install --upgrade pip
 pip install -r requirements.txt
 
+#=======================================================
 echo
 echo "=== Подготовка файлов окружения ==="
 mv app/.env_example_manage app/.env_manage
@@ -204,11 +200,10 @@ if [ -n "$set_ip" ]; then
 fi
 echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
 
-./Scripts/nginx.sh "$public_ip"
 ./Scripts/ssl.sh "$public_ip"
+./Scripts/nginx.sh "$public_ip"
 
 #=======================================================
-
 printf "\n\n=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===\n"
 read -rp "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " run_service
 

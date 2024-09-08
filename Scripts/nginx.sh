@@ -61,39 +61,4 @@ fi
 #  sudo systemctl restart nginx.service
 #  systemctl status nginx.service
 #==========================================
-#     <p>This is a &nbsp; regular space.</p>
-#    <p>This is a &ensp; two spaces gap.</p>
-#    <p>This is a &emsp; four spaces gap.</p>
-#==========================================
-#if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
-
-#fi
-#==========================================
-#      charset UTF-8;
-#        add_header charset utf-8;
-#        return 200 '<!DOCTYPE html><meta charset=\'utf-8\'><h2> Проверка Nginx (менеджер ботов)!</h2>';
-#==========================================
-#        return 200 'TEST';
-#        return 200 '== Проверка менеджера ботов! == <h1>TEST</h1> ';
-#        add_header Content-Type text/plain;
-#        default_type text/html;
-#        return 200 '<!DOCTYPE html><h2>Проверка менеджера ботов!</h2>';
-#        return 200 '<!DOCTYPE html><meta charset=\'utf-8\'><h2>Проверка менеджера ботов!</h2>';
-#        charset utf-8;
-#        source_charset utf-8;
-#==========================================
-#  sudo chown -Rv "$USER" /etc/nginx/conf.d
-#  sudo chown -v "$USER" /etc/nginx/conf.d/bots
-#==========================================
-#touch /etc/nginx/conf.d/manageBots.conf
-#fi
-
-#  echo "dsdsd" > /etc/nginx/conf.d/11.txt
-#==========================================
-#echo "=== Перезапуск Nginx ==="
-#sudo systemctl daemon-reload
-#sudo systemctl restart nginx.service
-#==============
-#public_ip
-
 
