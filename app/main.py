@@ -11,19 +11,12 @@ from .config_manage import (config_Manage, logging, BASE_WEBHOOK_URL,
                             WEBHOOK_SSL_CERT, WEBHOOK_SSL_KEY)
 from .routers import bots
 from .database import create_tables
-from .utils import prepare_Nginx
-from fastapi.logger import logger as fastapi_logger
+
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # added path "/home/marat/PycharmProjects/manageBots/app"
 
 # Создаем таблицы, если их нет (раскомментировать)
 create_tables()
-
-# ============ Nginx =============================
-# Предварительная подготовка Nginx сервера:
-# 1. Подготовка самоподписанных ssl сертификатов
-# 2. Предварительная подготовка Nginx конфигурации
-prepare_Nginx()  # Раскомментировать при первом запуске
 
 
 # ========== FastAPI ================
@@ -45,6 +38,14 @@ logging.warning(f"{WEBHOOK_SSL_KEY= }")
 
 
 # ==================================================
+# ==================================================
+# ==================================================
+# # ============ Nginx =============================
+# # Предварительная подготовка Nginx сервера:
+# # 1. Подготовка самоподписанных ssl сертификатов
+# # 2. Предварительная подготовка Nginx конфигурации
+# prepare_Nginx()  # Раскомментировать при первом запуске
+
 # ==================================================
 # title = 'Система управления ©️ботами\n - \U000000A9СУБота©️ &#169;',
 # # ========== FastAPI Logs================

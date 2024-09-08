@@ -20,17 +20,6 @@ SELF_SSL = config_Manage.SELF_SSL
 WEBHOOK_PATH = config_Manage.WEBHOOK_PATH
 WEBHOOK_SECRET = config_Manage.WEBHOOK_SECRET
 
-# ========= LOGS =============================
-# LOG_FILE = config_Manage.LOG_MANAGE
-# stream_handler = logging.StreamHandler()
-# stream_handler.setLevel(logging.INFO)
-#
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format='%(asctime)s [%(levelname)s] [%(module)s] [%(funcName)s]: %(message)s',
-#     handlers=[logging.FileHandler(LOG_FILE, mode='a'), stream_handler])  # mode='w'
-# ===========================================
-
 
 # ============ TG =============================
 async def set_token(active: bool, token: str) -> User | TelegramUnauthorizedError | TokenValidationError:
@@ -170,25 +159,6 @@ def run_com(com_line: str):
     return proc
 
 
-def prepare_Nginx():
-    """
-     Предварительная подготовка Nginx сервера:
-     1. Подготовка самоподписанных ssl сертификатов
-       Запуск в шелле: ./Scripts/ssl.sh 178.1.1.1
-     2. Предварительная подготовка Nginx конфигурации
-       Запуск в шелле: ./Scripts/nginx_prepare.sh 178.1.1.1
-       Первый параметр в строке запуска $1 - public_ip, внешний IP адрес (пример 178.1.1.1)
-    :return:
-    """
-    logging.info(f"\n\n  === Предварительная подготовка Nginx сервера: ===\n")
-
-    ssl = run_com(ssl_scr)  # Запуск скрипта
-    logging.info(f"\n{ssl.stdout}\n=== SSL: ===\n{ssl.stderr}")
-
-    nginx = run_com(nginx_scr)  # Запуск скрипта
-    logging.info(f"\n{nginx.stdout}\n=== Ошибка: ===\n{nginx.stderr}")
-
-
 def activate_bot_nginx(bot: BotsOrm):
     activate_bot_scr = f"./Scripts/activate_bot_nginx.sh {bot.active.name} {config_Manage.WEBHOOK_PATH} {bot.token_tg} {bot.web_server_host} {bot.web_server_port}"
     # logging.info(f"\n\n  === Добавления бота в Nginx конфигурацию ===\n")
@@ -202,127 +172,38 @@ def activate_bot_nginx(bot: BotsOrm):
     return bot_proc
 
 
-# def del_bot_nginx(bot: BotsOrm):
-#     del_bot_scr = f"./Scripts/del_bot_nginx.sh {config_Manage.WEBHOOK_PATH} {bot.token_tg} {bot.web_server_host} {bot.web_server_port}"
-#     logging.info(f"\n\n  === Удаление бота из Nginx конфигурации ===\n")
-#     bot_proc = run_com(del_bot_scr)
-#     return bot_proc
-
-# =================================================
-# =================================================
-# =================================================
-# add_bot_nginx(token)  # Добавление в конфигурация Nginx бота,
-# Лучше сделать это в "ручках" bots.py, после получения всех данных о боте.
-# Нужны:
-# token_tg, web_server_host, web_server_port, WEBHOOK_PATH, возможно BASE_WEBHOOK_URL
-# =================================================
-#     ssl = run_com(ssl_scr)  # Запуск скрипта
-#     logging.info(f"\n{ssl.stdout}\n")
+# ================================================
+# ================================================
+# ================================================
+# def prepare_Nginx():
+#     """
+#      Предварительная подготовка Nginx сервера:
+#      1. Подготовка самоподписанных ssl сертификатов
+#        Запуск в шелле: ./Scripts/ssl.sh 178.1.1.1
+#      2. Предварительная подготовка Nginx конфигурации
+#        Запуск в шелле: ./Scripts/nginx_prepare.sh 178.1.1.1
+#        Первый параметр в строке запуска $1 - public_ip, внешний IP адрес (пример 178.1.1.1)
+#     :return:
+#     """
+#     logging.info(f"\n\n  === Предварительная подготовка Nginx сервера: ===\n")
 #
-#     if ssl.returncode == 1:
-#         logging.info(f"\n=== ERROR ===:\n{ssl.stderr}")
+#     ssl = run_com(ssl_scr)  # Запуск скрипта
+#     logging.info(f"\n{ssl.stdout}\n=== SSL: ===\n{ssl.stderr}")
 #
 #     nginx = run_com(nginx_scr)  # Запуск скрипта
-#     logging.info(f"\n{nginx.stdout}\n")
+#     logging.info(f"\n{nginx.stdout}\n=== Ошибка: ===\n{nginx.stderr}")
+# ========= LOGS =============================
+# LOG_FILE = config_Manage.LOG_MANAGE
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging.INFO)
 #
-#     if ssl.returncode == 1:
-#         logging.info(f"\n=== ERROR ===:\n{nginx.stderr}")
-# =================================================
-    # logging.info(f"\n{ssl.stdout}\n=== ERROR ===:\n{ssl.stderr}")
-    # logging.info(f"\n{nginx.stdout}\n=== ERROR ===:\n{nginx.stderr}")
-# =================================================
-# def run_com(com_line: str) -> subprocess.CompletedProcess[str]:
-# # ========= Nginx =============================
-# public_ip = config_Manage.PUBLIC_IP
-# cmd_create_ssl = (f"openssl req -newkey rsa:2048 -sha256 -nodes -keyout SSL/{public_ip}.self.key"
-#                   f" -x509 -days 365 -out SSL/{public_ip}.self.crt"
-#                   f" -subj '/C=RU/ST=RT/L=KAZAN/O=Home/CN=$domain_ip'")
-#
-# cmd_ssl_link = (f"mkdir -p -v /etc/ssl/nginx &&"
-#                 f" ln -s SSL/{public_ip}.self.key /etc/ssl/nginx/{public_ip}.self.key"
-#                 f" && ln -s SSL/{public_ip}.self.key /etc/ssl/nginx/{public_ip}.self.key")
-#
-#
-# def run_command(command_line) -> str:
-#     command_split = shlex.split(command_line)
-#
-#     print(command_split)
-#
-#     proc = subprocess.run(
-#         command_split,
-#         stdout=subprocess.PIPE,
-#         encoding="ascii",)
-#
-#     return proc.stdout
-# ====================================
-# ====================================
-# ====================================
-# mkdir -p -v SSL2/A1
-# ====================================
-    # if proc.returncode != 0:
-    #     print("--Ошибкаааа---- ", proc.stderr)
-    # else:
-    #     print("===OKKKKKKK === ", proc.stdout)
-    # ------------------
-    # command_line = 'systemctl start docker.service'
-    # command_line = 'sudo mkdir /etc/ssl/nginx/'
-    # command_line = f'mkdir {dir_name} && touch {dir_name}/{file_name}'
-    # command_line = f'touch {dir_name}/{file_name}'
-# ====================================
-# openssl req -newkey rsa:2048 -sha256 -nodes -keyout $domain_ip.self.key -x509 -days 365 -out $domain_ip.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=$domain_ip"
-# ====================================
-# BASE_WEBHOOK_URL = BASE_WEBHOOK_URL
-# WEBHOOK_SSL_CERT = config_Manage.WEBHOOK_SSL_CERT
+# logging.basicConfig(
+#     level=logging.INFO,
+#     format='%(asctime)s [%(levelname)s] [%(module)s] [%(funcName)s]: %(message)s',
+#     handlers=[logging.FileHandler(LOG_FILE, mode='a'), stream_handler])  # mode='w'
+# ===========================================
+# ================================================
+# ================================================
+# ================================================
 
-# ============================================
-# if SELF_SSL:
-#     public_ip = requests.get('https://api.ipify.org').text
-#     print(f"=== IP Address === {public_ip=}")
-#     public_ip = "178.204.228.105"  # убрать в реальном проекте (Сертификат делается заранее)
-#     WEBHOOK_SSL_CERT = "/etc/ssl/nginx/" + public_ip + ".self.crt"
-#     WEBHOOK_SSL_PRIV = "/etc/ssl/nginx/" + public_ip + ".self.key"
-# ====================================
-#     if not is_bot_token(token):
-#         logging.info(f"\n\n  === Токен не прошел валидацию {token=:} ===\n")
-#         return None
-# --------------
-# def is_bot_token(value: str) -> bool: НЕ работает, всегда выдает "True"
-#     try:
-#         res = validate_token(value)  # НЕ работает, всегда выдает "True"
-#         logging.info(f"\n\n  === Валидация {res=:} ===\n")
-#     except TokenValidationError as e:
-#         logging.info(f"\n\n  === Токен не прошел валидацию {value=:}, {e} ===\n")
-#         return False
-#     return True
-# ====================================
-# def run_set_token(token: Any) -> Any:
-#     # run_set = asyncio.run(set_token("6615142110:AAHbuZTgRmqdGibn5MnzRD67CgflJqGJnJQ"))
-#     run_set = asyncio.run(set_token(token))
-#     if asyncio.run(set_token(token)).get("bot_username"):
-#
-#
-#     return run_set
-# ====================================
-# def is_bot_token(value: str) -> Union[bool, Dict[str, Any]]:
-# ====================================
-# ---111111----bot_user-------
-# id=6479059814
-# is_bot=True
-# first_name='auth_bot' last_name=None
-# username='VerifyAuthBot'
-# language_code=None
-# is_premium=None
-# added_to_attachment_
-# menu=None
-# can_join_groups=True
-# can_read_all_group_messages=False
-# supports_inline_queries=False
-# can_connect_to_business=False
-# has_main_web_app=False
 
-# ====================================
-# BASE_BOTS_URL = config_Manage.BASE_BOTS_URL
-# ====================================
-#         print("==3_5_1==StateBot.Not_Active==----", state.name)
-#         print("==3_5_1==StateBot.Not_Active==----", state.value)
-# ====================================

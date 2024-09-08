@@ -18,7 +18,7 @@ if [ "$1" == "Yes" ]; then
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_redirect off;
         proxy_buffering off;
-        proxy_pass https://$4:$5$2$3;
+        proxy_pass https://$4:$5;
     }
   " > /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
   echo "=== Файл конфигурации бота: bot_$3.conf ==="

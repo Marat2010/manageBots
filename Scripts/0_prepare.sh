@@ -137,16 +137,16 @@ fi
 #========================================================
 
 echo
-echo "=== Копирование проекта в каталог пользователя '$HOME' ==="
+echo "=== Копирование проекта в каталог пользователя '$PWD' ==="
 git clone https://github.com/Marat2010/manageBots
 wait
 
-cp -R manageBots/Scripts/.config/mc ~/mc/
+cp -R manageBots/Scripts/.config/mc ~/.config/
 
 #=======================================================
 
 echo 
-read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter): " proj_name
+read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
 
 if [ -z "$proj_name" ]
 then
@@ -194,9 +194,19 @@ echo "====================================================="
 read -rp "=== Если прочитали, для продолжения нажмите enter ==="
 
 #=======================================================
+printf "\n=== Предварительная подготовка Nginx конфигурации ===\n"
+public_ip="$(wget -q -O - ipinfo.io/ip)"
 
-echo "=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===" 
-echo 
+read -rp "=== Введите IP адрес сервера VPS:($public_ip - по умолчанию (Enter))" public_ip
+
+echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
+
+./Scripts/nginx_prepare.sh "$public_ip"
+./Scripts/ssl.sh "$public_ip"
+
+#=======================================================
+
+printf "\n\n=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===\n"
 read -rp "=== Запустить Менеджер ботов (manageBots) как службу? [y/N]: " run_service
 
 if [ "$run_service" == "y" ]; then
