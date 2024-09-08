@@ -43,7 +43,7 @@ stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
 
 logging.basicConfig(
-    level=logging.WARNING,
+    level=logging.DEBUG,
     format='%(asctime)s [%(levelname)s] [%(module)s] [%(funcName)s]: %(message)s',
     handlers=[logging.FileHandler(LOG_FILE, mode='w'), stream_handler])  # mode='w', 'a'
 

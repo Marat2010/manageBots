@@ -175,17 +175,12 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 #=======================================================
-echo
-echo "=== Подготовка файлов окружения ==="
+printf "\n=== Подготовка файлов окружения ===\n"
 mv app/.env_example_manage app/.env_manage
-mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
-mv our_Bots/bot_15002/.env_example_bot our_Bots/bot_15002/.env_bot
 echo
 echo "====================================================="
 echo "===   Отредактируйте переменные окружения:        ==="
 echo "=== Для приложения файл: app/.env_manage          ==="
-echo "=== Для первого бота:  our_Bots/bot1/.env_bot     ==="
-echo "=== Для второго бота:  our_Bots/bot2/.env_bot     ==="
 echo "====================================================="
 read -rp "=== Если прочитали, для продолжения нажмите enter ==="
 
@@ -235,6 +230,7 @@ if [ "$run_service" == "y" ]; then
     sudo systemctl daemon-reload
     sudo systemctl enable ManageBots.service
     sudo systemctl start ManageBots.service
+    sudo systemctl status ManageBots.service |head -n 3 |tail -n 1
 fi
 
 printf "\n\n====== Информация для проверки =========================\n"
@@ -249,6 +245,10 @@ printf "\n==========================================================\n"
 #=======================================================
 #=======================================================
 #=======================================================
+#mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
+#mv our_Bots/bot_15002/.env_example_bot our_Bots/bot_15002/.env_bot
+#=======================================================
+#=======================================================
 #ls -al | grep $proj_name
 #=======================================================
 #  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
@@ -258,20 +258,6 @@ printf "\n==========================================================\n"
 #sudo systemctl daemon-reload
 #sudo systemctl enable ManageBots.service
 #sudo systemctl start ManageBots.service
-#=======================================================
-#echo
-#echo "=== Подготовка самоподписанных SSL сертификатов для IP  ===" 
-#sudo mkdir /etc/ssl/nginx
-#mkdir ~/SSL
-#
-#echo
-#read -p "=== Введите IP адрес сервера VPS: " domain_ip
-#
-#openssl req -newkey rsa:2048 -sha256 -nodes -keyout $domain_ip.self.key -x509 -days 365 -out $domain_ip.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=$domain_ip"
-#
-#sudo mv $domain_ip.self.key /etc/ssl/nginx/
-#sudo mv $domain_ip.self.crt /etc/ssl/nginx/
-
 #=======================================================
 #pip install aiogram==3.10.0
 #pip freeze > requirements.txt

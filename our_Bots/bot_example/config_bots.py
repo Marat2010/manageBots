@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     WEB_SERVER_PORT: int = 15001        # Установите в ".env_bot" номер свободного порта из диапозона 15001-65535
     BASE_WEBHOOK_URL: str = "https://178.1.1.1:8443"
 
-    model_config = SettingsConfigDict(env_file='./our_Bots/bot1/.env_bot', env_file_encoding='utf-8', extra='ignore')
+    model_config = SettingsConfigDict(env_file='./our_Bots/bot_15001/.env_bot', env_file_encoding='utf-8', extra='ignore')
     # Начиная со второй версии pydantic, настройки класса настроек задаются через model_config
     # В данном случае будет использоваться файла .env, который будет прочитан с кодировкой UTF-8
     # Пример пути файла на 2 уровня вверх: env_file='../../.env', или в "utils": env_file='utils/.env'
@@ -35,7 +35,6 @@ class Settings(BaseSettings):
     # если и там нет, то значения по умолчанию отсюда
 
     # ===== Log file name =====
-    LOG_MANAGE: str = "bot.log"
 
 
 # При импорте файла сразу создастся и провалидируется объект конфига, который можно импортировать из разных мест
@@ -50,7 +49,7 @@ WEBHOOK_SSL_CERT = "/etc/ssl/nginx/" + config_bot.PUBLIC_IP + ".self.crt"
 WEBHOOK_SSL_KEY = "/etc/ssl/nginx/" + config_bot.PUBLIC_IP + ".self.key"
 
 # ========= LOGS =============================
-LOG_FILE = config_bot.LOG_MANAGE
+LOG_FILE = f"./our_Bots/bot_{config_bot.WEB_SERVER_PORT}/bot_{config_bot.WEB_SERVER_PORT}.log"
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.INFO)
 
@@ -93,11 +92,15 @@ if bot:  # Если бот в БД, то настройки берутся от�
 logging.info(f"=== Настройки: ===")
 logging.info(f"{WEBHOOK_SSL_CERT= }")
 logging.info(f"{WEBHOOK_SSL_KEY= }")
+logging.info(f"{LOG_FILE= }")
 [logging.info(f"{param}") for param in config_bot]
 
 
 # ==============================================================
 # ==============================================================
+# ==============================================================
+# LOG_FILE = config_bot.LOG_Bot_File
+# LOG_FILE = f"./our_Bots/bot_15001/logs/bot.log"
 # ==============================================================
 # logging.info(f"=== Настройки для бота: ===\n")
 # for i in config_bot:

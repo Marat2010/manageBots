@@ -7,7 +7,6 @@ This example shows how to use webhook on behind of any reverse proxy (nginx, tra
 
 import logging
 import sys
-from os import getenv
 
 from aiohttp import web
 
@@ -22,7 +21,6 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 # ======= Добавлено ==========================
 import ssl
 from config_bots import config_bot, WEBHOOK_SSL_CERT, WEBHOOK_SSL_KEY
-# ------------------------------
 
 # ========= TG ===============================
 SELF_SSL = config_bot.SELF_SSL  # Для случаев, когда нет нормального сертификата на домен
@@ -91,6 +89,7 @@ async def on_startup(bot: Bot) -> None:
         )
     else:
         await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
+    await bot.send_message(chat_id=241462113, text="Бот 1 запустился")
     # ===============================================
 
 
@@ -99,6 +98,7 @@ async def on_shutdown(bot: Bot) -> None:
     """
     Graceful shutdown. This method is recommended by aiohttp docs.
     """
+    await bot.send_message(chat_id=241462113, text="Бот 1 CLOSE")
     # Remove webhook.
     await bot.delete_webhook()
 
@@ -135,8 +135,8 @@ def main() -> None:
     # ======= Добавлено ==========================
     if SELF_SSL:  # ==== For self-signed certificate ====
         # Generate SSL context
-        # context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)  # устарел
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)  # устарел
         context.load_cert_chain(WEBHOOK_SSL_CERT, WEBHOOK_SSL_KEY)
 
         # And finally start webserver
@@ -148,8 +148,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-
+    logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     # LOG_FILE = config_bot.LOG_MANAGE
     # stream_handler = logging.StreamHandler()
     # stream_handler.setLevel(logging.INFO)
@@ -162,6 +161,15 @@ if __name__ == "__main__":
 
 
 # ===========================================================
+# ===========================================================
+# ===========================================================
+# Your user ID: 241462113
+# Current chat ID: 241462113
+# Forwarded from: 6615142110
+# ===========================================================
+    # session = AiohttpSession()
+    # session._connector_init = {'ssl': False}
+    # bot = Bot(token=TOKEN_TG, session=session, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 # ===========================================================
 # WEBHOOK_SECRET = config_bot.WEBHOOK_SECRET
 
