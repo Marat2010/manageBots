@@ -134,13 +134,6 @@ def change_state_bot(bot: BotsOrm) -> User:
 
 # ============ Nginx =============================
 
-# Скрипт формирования self-signed SSL сертификатов:
-ssl_scr = "./Scripts/ssl.sh " + config_Manage.PUBLIC_IP
-
-# Скрипт подготовки предварительной Nginx конфигурации:
-nginx_scr = "./Scripts/nginx.sh " + config_Manage.PUBLIC_IP
-
-
 def run_com(com_line: str):
     """
     Запуск shell скриптов
@@ -160,7 +153,8 @@ def run_com(com_line: str):
 
 
 def activate_bot_nginx(bot: BotsOrm):
-    activate_bot_scr = f"./Scripts/activate_bot_nginx.sh {bot.active.name} {config_Manage.WEBHOOK_PATH} {bot.token_tg} {bot.web_server_host} {bot.web_server_port}"
+    activate_bot_scr = (f"./Scripts/activate_bot_nginx.sh {bot.active.name} {config_Manage.WEBHOOK_PATH}"
+                        f" {bot.token_tg} {bot.web_server_host} {bot.web_server_port}")
     # logging.info(f"\n\n  === Добавления бота в Nginx конфигурацию ===\n")
     bot_proc = run_com(activate_bot_scr)
     # logging.info(f"\n{bot_proc.stdout}\n=== Ошибка: ===\n{bot_proc.stderr}")
@@ -175,6 +169,12 @@ def activate_bot_nginx(bot: BotsOrm):
 # ================================================
 # ================================================
 # ================================================
+# # Скрипт формирования self-signed SSL сертификатов:
+# ssl_scr = "./Scripts/ssl.sh " + config_Manage.PUBLIC_IP
+#
+# # Скрипт подготовки предварительной Nginx конфигурации:
+# nginx_scr = "./Scripts/nginx.sh " + config_Manage.PUBLIC_IP
+# -----------------------
 # def prepare_Nginx():
 #     """
 #      Предварительная подготовка Nginx сервера:
