@@ -57,8 +57,8 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
 
   listen 5080 ssl;
 
-  ssl_certificate       /etc/ssl/nginx/176.124.200.234.self.crt;
-  ssl_certificate_key   /etc/ssl/nginx/176.124.200.234.self.key;
+  ssl_certificate       /etc/ssl/nginx/$1.self.crt;
+  ssl_certificate_key   /etc/ssl/nginx/$1.self.key;
 
   error_log /var/log/nginx/manageBots.log;
   access_log /var/log/nginx/manageBots.log;
