@@ -29,7 +29,7 @@ mkdir "./our_Bots/bot_$port" || { echo " !!! Такой бот существу�
 
 cp ./our_Bots/bot_example/main_example.py ./our_Bots/bot_$port/main.py
 cp ./our_Bots/bot_example/config_bots_example.py ./our_Bots/bot_$port/config_bots.py
-sed -i 's/SetPort/15001/' our_Bots/bot_$port/config_bots.py
+sed -i "s/SetPort/$port/" our_Bots/bot_$port/config_bots.py
 
 #=======================================================
 printf "\n === Формирования файла окружения для бота ===\n"

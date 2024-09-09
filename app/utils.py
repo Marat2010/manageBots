@@ -54,10 +54,10 @@ async def set_token(active: bool, token: str) -> User | TelegramUnauthorizedErro
     await new_bot.delete_webhook(drop_pending_updates=True)
 
     logging.info(f"\n\n  === Удален вебхук для токена: {token}, пользователь: {bot_info.username} ===\n")
-    logging.info(f"\n\n  === {BASE_WEBHOOK_URL=} ===\n")
-    logging.info(f"\n\n  === {WEBHOOK_PATH=} ===\n")
-    logging.info(f"\n\n  === {WEBHOOK_SSL_CERT=} ===\n")
-    logging.info(f"\n\n  === {WEBHOOK_SECRET=} ===\n")
+    logging.info(f"\n  === {BASE_WEBHOOK_URL=} ===\n")
+    logging.info(f"\n  === {WEBHOOK_PATH=} ===\n")
+    logging.info(f"\n  === {WEBHOOK_SSL_CERT=} ===\n")
+    logging.info(f"\n  === {WEBHOOK_SECRET=} ===\n")
 
     if active:
         try:

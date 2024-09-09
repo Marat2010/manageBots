@@ -89,7 +89,7 @@ async def on_startup(bot: Bot) -> None:
         )
     else:
         await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
-    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST} стартанул, но не запущен.")
+    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST}:{WEB_SERVER_PORT}")
     # ===============================================
 
 

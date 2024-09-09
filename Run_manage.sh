@@ -4,19 +4,18 @@
 #Запуск приложения Менеджер ботов:
 #=========================================
 
-# shellcheck disable=SC2164
-#cd /home/marat/PycharmProjects/manageBots/
-
 #cd $HOME/manageBots
-cd "$HOME/$PROJECT_NAME"
+cd "$HOME/$PROJECT_NAME" || { exit 1; }
 source .venv/bin/activate
 
-uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload
+uvicorn app.main:app --host 127.0.0.1 --port 12000 --reload
 
 
 #=========================================
 #=========================================
-#echo "=== Запуск сервиса, службы (SYSTEMD) бота ===" 
+#uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload
+#=========================================
+#echo "=== Запуск сервиса, службы (SYSTEMD) бота ==="
 #echo
 #sudo cp /$HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
 #sudo systemctl daemon-reload

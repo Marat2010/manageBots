@@ -50,20 +50,24 @@ xferlog_enable=YES
 connect_from_port_20=YES
 xferlog_file=/var/log/vsftpd.log
 xferlog_std_format=YES
-chroot_local_user=YES
+chroot_local_user=NO
 allow_writeable_chroot=YES
 local_root=/
 pam_service_name=vsftpd
-#userlist_enable=YES
+userlist_enable=YES
 userlist_file=/etc/vsftpd.userlist
-#userlist_deny=NO
+userlist_deny=NO
 userlist_deny=YES
+pasv_min_port=40000
+pasv_max_port=50000
 
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
 rsa_private_key_file=/etc/ssl/private/vsftpd.pem
-ssl_enable=YES
+ssl_enable=NO
+allow_anon_ssl=YES
 " > /etc/vsftpd.conf
 
+echo "root" > /etc/vsftpd.userlist
 #-----------------------------------------------------
 printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
@@ -136,7 +140,7 @@ echo "=== Копирование проекта в каталог пользов
 git clone https://github.com/Marat2010/manageBots
 wait
 
-cp -R manageBots/Scripts/.config/mc ~/.config/
+cp -R "$HOME/manageBots/Scripts/.config/mc" "$HOME/.config/"
 
 #=======================================================
 echo 
@@ -237,7 +241,7 @@ printf "\n\n====== Информация для проверки ================
 public_ip="$(wget -q -O - ipinfo.io/ip)"
 
 printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
-printf "\n=== API - Менеджер ботов (swagger): http://%s:12000/docs ===  \n" "$public_ip"
+printf "\n=== API - Менеджер ботов (swagger): https://%s:5080/docs ===  \n" "$public_ip"
 printf "\n=== Проверка токена: https://api.telegram.org/bot661....:AA...JQ/getWebhookInfo ===  \n"
 printf "\n==========================================================\n"
 

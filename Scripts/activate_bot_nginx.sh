@@ -12,19 +12,21 @@ fi
 
 if [ "$1" == "Yes" ]; then
   printf "\n=== Добавляем бота в конфигурации Nginx ===\n"
-  echo "
-      location $2$3 {
-        proxy_set_header Host \$http_host;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_redirect off;
-        proxy_buffering off;
-        proxy_pass https://$4:$5;
-    }
+  echo "location $2$3 {
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_redirect off;
+    proxy_buffering off;
+    proxy_pass https://$4:$5;
+}
   " > /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
   echo "=== Файл конфигурации бота: bot_$3.conf ==="
 
+  printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
+  sudo nginx -s reload
+
   printf "\n=== Старт сервиса (службы) бота ===\n"
-  sudo systemctl start bot_"$5"
+  sudo systemctl restart bot_"$5"
 
 elif [ "$1" == "No" ]; then
   printf "\n=== Удаляем бота из конфигурации Nginx ===\n"
