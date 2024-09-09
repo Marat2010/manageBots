@@ -1,7 +1,9 @@
 import logging
+import os
 import sqlite3
 
 import requests
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import SecretStr
 
@@ -9,8 +11,6 @@ from pydantic import SecretStr
 class Settings(BaseSettings):
     # ======= DB =======
     DATABASE_URL_SQLITE: str = "./mb.sqlite3"
-    # DATABASE_URL_SQLITE: str = "sqlite+pysqlite:///./DB/mb.sqlite3"
-    # DATABASE_URL_SQLITE: str = "sqlite+pysqlite:///./DB/mb.db"
 
     # === Telegram settings for bots ===
     SELF_SSL: bool = True  # Для случаев, когда нет нормального сертификата на домен или IP
@@ -24,17 +24,15 @@ class Settings(BaseSettings):
     TOKEN_TG: str = "6615***:AAHb***"
 
     WEB_SERVER_HOST: str = "127.0.0.1"  # Если нет данных в ".env", то берется по умолчанию "127.0.0.1"
-    WEB_SERVER_PORT: int = 15001        # Установите в ".env_bot" номер свободного порта из диапозона 15001-65535
+    WEB_SERVER_PORT: int        # Установите в ".env_bot" номер свободного порта из диапозона 15001-65535
     BASE_WEBHOOK_URL: str = "https://178.1.1.1:8443"
 
-    model_config = SettingsConfigDict(env_file='./our_Bots/bot_15001/.env_bot', env_file_encoding='utf-8', extra='ignore')
+    model_config = SettingsConfigDict(env_file=f'./our_Bots/bot_SetPort/.env_bot', env_file_encoding='utf-8', extra='ignore')
     # Начиная со второй версии pydantic, настройки класса настроек задаются через model_config
     # В данном случае будет использоваться файла .env, который будет прочитан с кодировкой UTF-8
     # Пример пути файла на 2 уровня вверх: env_file='../../.env', или в "utils": env_file='utils/.env'
     # ДАННЫЕ БЕРУТСЯ СНАЧАЛА из переменных окружения в системе, если их там нет, то из файла ".env",
     # если и там нет, то значения по умолчанию отсюда
-
-    # ===== Log file name =====
 
 
 # При импорте файла сразу создастся и провалидируется объект конфига, который можно импортировать из разных мест
@@ -99,6 +97,12 @@ logging.info(f"{LOG_FILE= }")
 # ==============================================================
 # ==============================================================
 # ==============================================================
+# model_config = SettingsConfigDict(env_file='./our_Bots/bot_15001/.env_bot', env_file_encoding='utf-8', extra='ignore')
+# model_config = SettingsConfigDict(env_file=f'.env_bot', env_file_encoding='utf-8', extra='ignore')
+# ==============================================================
+# port = os.environ.get("WEB_SERVER_PORT")
+# load_dotenv('/home/miguel/my_project/.env')
+# ==============================================================
 # LOG_FILE = config_bot.LOG_Bot_File
 # LOG_FILE = f"./our_Bots/bot_15001/logs/bot.log"
 # ==============================================================
@@ -111,6 +115,9 @@ logging.info(f"{LOG_FILE= }")
 # ==============================================================
 # print("DATABASE_URL_SQLITE:=======", config_bot.DATABASE_URL_SQLITE)
 # print("WEB_SERVER_PORT:=======", config_bot.WEB_SERVER_PORT)
+# ==============================================================
+# DATABASE_URL_SQLITE: str = "sqlite+pysqlite:///./DB/mb.sqlite3"
+# ==============================================================
 # ==============================================================
     # data = data_to_dataDB(data_dict)  # Переводим словарь данных в кортеж, для последующего занесения в БД
 

@@ -68,7 +68,7 @@ async def command_start_handler(message: Message) -> None:
 @router.message()
 async def echo_handler(message: Message) -> None:
     try:
-        await message.answer(f"Это Первый Бот. Он проверяет оплату ...) "
+        await message.answer(f"Это Бот 'bot_{WEB_SERVER_PORT}'. Он, например проверяет оплату ...) "
                              f"Локально запущен: {WEB_SERVER_HOST}:{WEB_SERVER_PORT}")
         # Send a copy of the received message
         await message.send_copy(chat_id=message.chat.id)
@@ -89,7 +89,7 @@ async def on_startup(bot: Bot) -> None:
         )
     else:
         await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
-    await bot.send_message(chat_id=241462113, text="Бот 1 запустился")
+    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST} стартанул, но не запущен.")
     # ===============================================
 
 

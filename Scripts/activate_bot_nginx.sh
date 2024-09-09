@@ -22,20 +22,33 @@ if [ "$1" == "Yes" ]; then
     }
   " > /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
   echo "=== Файл конфигурации бота: bot_$3.conf ==="
+
+  printf "\n=== Старт сервиса (службы) бота ===\n"
+  sudo systemctl start bot_"$5"
+
 elif [ "$1" == "No" ]; then
   printf "\n=== Удаляем бота из конфигурации Nginx ===\n"
   rm -v /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
+
+  printf "\n=== Остановка сервиса (службы) бота ===\n"
+  sudo systemctl stop bot_"$5"
+
 else
   printf "\n=== Неверное состояние бота (должно быть Yes или No) ===\n"
 fi
 
+sudo systemctl status bot_"$5" |head -n 3
+
 printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
 sudo nginx -s reload
-#sudo nginx -t
 sudo systemctl status nginx.service |head -n 3
 
 
 #===================================
+#===================================
+#printf "\n=== Перезапуск сервиса (службы) бота ===\n"
+#sudo systemctl restart bot_"$5"
+#sudo systemctl status bot_"$5" |head -n 3
 #===================================
 #if [ ! -f "/etc/nginx/conf.d/bots/bot_$1.conf" ]; then
 #fi

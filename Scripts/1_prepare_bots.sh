@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n===================================\n"
+printf "\n\n===================================\n"
 printf "\n=== Подготовка шаблона для бота ===\n"
 printf "\n===================================\n\n"
 #echo "=== Запуск сервиса, службы (SYSTEMD) для бота ==="
@@ -18,17 +18,18 @@ printf "    Установим: WEB_SERVER_PORT=%s\n\n" "$port "
 
 read -rp "=== Укажите токен бота (TOKEN_TG) [66xx:AA......JQ]: " token
 if [ -z "$token" ]; then token=66xx:AA......JQ; fi
-printf "    Установим: TOKEN_TG=%s\n\n" "$token"
+printf "    Установим: TOKEN_TG=%s\n" "$token"
 
 #=======================================================
 #cd "/home/marat/PycharmProjects/manageBots/" || { exit 1; }
 #mkdir "./our_Bots/bot_$port" || { echo " !!! Такой бот существует !!!!!"; exit 1;}
 #----- Менять на вверх когда запуск у себя --------
 cd "$HOME/$PROJECT_NAME" || { exit 1; }
-mkdir "./our_Bots/bot_$port " || { echo " !!! Такой бот существует !!!"; exit 1;}
+mkdir "./our_Bots/bot_$port" || { echo " !!! Такой бот существует !!!"; exit 1;}
 
-cp "./our_Bots/bot_example/main_example.py" "./our_Bots/bot_$port/main.py"
-cp "./our_Bots/bot_example/config_bots.py" "./our_Bots/bot_$port/"
+cp ./our_Bots/bot_example/main_example.py ./our_Bots/bot_$port/main.py
+cp ./our_Bots/bot_example/config_bots_example.py ./our_Bots/bot_$port/config_bots.py
+sed -i 's/SetPort/15001/' our_Bots/bot_$port/config_bots.py
 
 #=======================================================
 printf "\n === Формирования файла окружения для бота ===\n"
@@ -54,6 +55,12 @@ WEBHOOK_SECRET='change_secret_2024'  # Разрешены только симв�
 " > ./our_Bots/bot_$port/.env_bot
 
 #=======================================================
+echo
+echo "=== Каталог бота: $PWD/our_Bots/bot_$port ==="
+ls -al "$PWD/our_Bots/bot_$port"
+
+#=======================================================
+echo
 read -rp "=== Запустить бота (bot_$port ) как службу? [y/N]: " run_service
 
 if [ "$run_service" == "y" ]; then

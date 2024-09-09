@@ -155,6 +155,7 @@ def run_com(com_line: str):
 def activate_bot_nginx(bot: BotsOrm):
     activate_bot_scr = (f"./Scripts/activate_bot_nginx.sh {bot.active.name} {config_Manage.WEBHOOK_PATH}"
                         f" {bot.token_tg} {bot.web_server_host} {bot.web_server_port}")
+
     # logging.info(f"\n\n  === Добавления бота в Nginx конфигурацию ===\n")
     bot_proc = run_com(activate_bot_scr)
     # logging.info(f"\n{bot_proc.stdout}\n=== Ошибка: ===\n{bot_proc.stderr}")
