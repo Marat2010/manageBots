@@ -39,10 +39,19 @@ if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
     include /etc/nginx/conf.d/bots/*.conf;
 }
   " > /etc/nginx/conf.d/manageBots.conf
+
+  printf "=== Файлы конфигурации Nginx создан (manageBots.conf)! ===\n"
+
+else
+  printf "\n=== Файл конфигурации уже существует!!! ===\n"
+  printf "=== Изменения НЕ внесены!!! ===\n"
+  printf "=== Для изменений удалите или переименуйте файлы 'manageBots.conf', 'api_manageBots.conf' !!! ===\n"
+fi
+
 #=====================================================
 printf "\n=== Формируем конфигурацию для API '/etc/nginx/conf.d/api_manageBots.conf' ===\n"
 
-elif [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
+if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
   echo "server {
   server_name _;
 
@@ -63,19 +72,19 @@ elif [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
   }
 }
   " > /etc/nginx/conf.d/api_manageBots.conf
-
-#=====================================================
-  printf "=== Файлы конфигурации Nginx созданы (manageBots.conf, api_manageBots.conf)! ===\n"
-
-  printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
-  sudo nginx -s reload
-  sudo nginx -t
+  printf "=== Файлы конфигурации Nginx создан (api_manageBots.conf)! ===\n"
 
 else
   printf "\n=== Файл конфигурации уже существует!!! ===\n"
   printf "=== Изменения НЕ внесены!!! ===\n"
-  printf "=== Для изменений удалите или переименуйте файлы 'manageBots.conf', 'api_manageBots.conf' !!! ===\n"
+  printf "=== Для изменений удалите или переименуйте файл 'api_manageBots.conf' !!! ===\n"
 fi
+
+printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
+sudo nginx -s reload
+sudo nginx -t
+
+#=====================================================
 
 
 #==========================================
