@@ -140,7 +140,7 @@ echo "=== Копирование проекта в каталог пользов
 git clone https://github.com/Marat2010/manageBots
 wait
 
-cp -R "$HOME/manageBots/Scripts/.config/mc" "$HOME/.config/"
+cp -vR "$HOME/manageBots/Scripts/.config/mc" "$HOME/.config/"
 
 #=======================================================
 echo 
@@ -222,9 +222,11 @@ if [ "$run_service" == "y" ]; then
     EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
-    #ExecStart=/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && /.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'
+    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'    
 
-    ExecStart=$HOME/$proj_name/Run_manage.sh
+    # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
+    # ExecStart=$HOME/$proj_name/Run_manage.sh
+
 
     [Install]
     WantedBy=multi-user.target

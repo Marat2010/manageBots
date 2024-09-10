@@ -5,12 +5,17 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import exc
 
-from ..database import session_factory
+# from ..database import session_factory
+from app.database import session_factory
+# from database import session_factory
 # from app.main import logger
-from ..models import BotsOrm, ActiveBot
-from ..schemas import (SBotBase, SBot, SBotAdd, SBotGetByPort, SBotUpdateByPort,
-                       SBotGetByToken, SBotUpdateByToken, SBotDel, SBotUpd)
-from ..utils import change_state_bot
+# from ..models import BotsOrm, ActiveBot
+from models import BotsOrm, ActiveBot
+# from ..schemas import (SBotBase, SBot, SBotAdd, SBotGetByPort, SBotUpdateByPort,
+from schemas import (SBotBase, SBot, SBotAdd, SBotGetByPort, SBotUpdateByPort,
+                     SBotGetByToken, SBotUpdateByToken, SBotDel, SBotUpd)
+# from ..utils import change_state_bot
+from utils import change_state_bot
 
 router = APIRouter(prefix="/api/bots")
 

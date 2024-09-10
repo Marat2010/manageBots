@@ -5,6 +5,7 @@ import os
 import sys
 
 from app.config_manage import config_Manage  # for fastapi
+# from config_manage import config_Manage  # for fastapi
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 

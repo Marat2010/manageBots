@@ -5,8 +5,10 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 # from DB.database import Base
-from app.database import Base
-from app.config_manage import config_Manage, BASE_WEBHOOK_URL
+
+# from app.database import Base
+from database import Base
+from config_manage import config_Manage, BASE_WEBHOOK_URL
 
 intpk = Annotated[int, mapped_column(primary_key=True)]
 str_256 = Annotated[str, 256]

@@ -12,8 +12,9 @@ from aiogram.types import FSInputFile, User
 from aiogram.utils.token import TokenValidationError, validate_token
 from fastapi import HTTPException
 
-from app.models import ActiveBot, BotsOrm
-from app.config_manage import config_Manage, BASE_WEBHOOK_URL, WEBHOOK_SSL_CERT
+# from app.models import ActiveBot, BotsOrm
+from models import ActiveBot, BotsOrm
+from config_manage import config_Manage, BASE_WEBHOOK_URL, WEBHOOK_SSL_CERT
 
 # ========= TG ===============================
 SELF_SSL = config_Manage.SELF_SSL
