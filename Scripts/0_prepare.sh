@@ -57,7 +57,6 @@ pam_service_name=vsftpd
 userlist_enable=YES
 userlist_file=/etc/vsftpd.userlist
 userlist_deny=NO
-userlist_deny=YES
 pasv_min_port=40000
 pasv_max_port=50000
 

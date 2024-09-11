@@ -22,8 +22,8 @@ if [ "$1" == "Yes" ]; then
   " > /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
   echo "=== Файл конфигурации бота: bot_$3.conf ==="
 
-  printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
-  sudo nginx -s reload
+#  printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
+#  sudo nginx -s reload
 
   printf "\n=== Старт сервиса (службы) бота ===\n"
   sudo systemctl restart bot_"$5"
