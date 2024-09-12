@@ -78,6 +78,7 @@ if [ "$confirm" == "y" ]; then
   cp /etc/ftpusers /etc/ftpusers_"$(date +%d-%m-%Y_%T)"
   sed -i 's/root/# root/' /etc/ftpusers
   cat /etc/ftpusers
+  systemctl restart vsftpd.service
   echo
   echo "========================================================================================="
   echo "==== Для отмены доступа root-a по ftp раскомментируйте '# root' в файле /etc/ftpusers ==="
@@ -139,7 +140,8 @@ echo "=== Копирование проекта в каталог пользов
 git clone https://github.com/Marat2010/manageBots
 wait
 
-cp -vR "$HOME/manageBots/Scripts/.config/mc" "$HOME/.config/"
+mkdir -v "$HOME/.config/mc"
+cp -vR "$HOME/manageBots/Scripts/.config/mc/*" "$HOME/.config/mc/"
 
 #=======================================================
 echo 

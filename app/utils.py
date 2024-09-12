@@ -4,6 +4,7 @@ import shlex
 import subprocess
 from typing import Union, Dict, Any
 
+import requests
 from aiogram import Bot
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.exceptions import (TelegramUnauthorizedError, TelegramBadRequest,
@@ -170,6 +171,31 @@ def activate_bot_nginx(bot: BotsOrm):
 
 # ================================================
 # ================================================
+# ================================================
+# # ========= set_token via request =============
+#
+# def set_token_request(active: bool, token: str) -> User:
+#     url = "https://api.telegram.org/bot6189775277%3AAAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ/setWebhook"
+#
+#     payload = {
+#         # "url": "https://194.58.92.239:8443/bot/6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQional",
+#         "url": "https://rupyt.ru:8443/bot/6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ",
+#         "certificate": "",
+#         # "WEBHOOK_SECRET": "change_secret_2024"
+#         # "certificate": "Optional"
+#     }
+#     headers = {
+#         "accept": "application/json",
+#         "User-Agent": "Telegram Bot SDK - (https://github.com/irazasyed/telegram-bot-sdk)",
+#         "content-type": "application/json",
+#         # "WEBHOOK_SECRET": "change_secret_2024"
+#     }
+#
+#     response = requests.post(url, json=payload, headers=headers)
+#
+#     print(response.text)
+#
+# # ========= END set_token via request =============
 # ================================================
 # # Скрипт формирования self-signed SSL сертификатов:
 # ssl_scr = "./Scripts/ssl.sh " + config_Manage.PUBLIC_IP
