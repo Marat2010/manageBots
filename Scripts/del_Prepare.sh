@@ -16,13 +16,13 @@ if [ "$PWD" == "$HOME/PycharmProjects/manageBots" ]; then
     exit 1
 fi
 
-#======== Удаление папки проекта =============
-rm -rfv "$PROJECT_NAME"
-
 #=========== Остановка сервиса ===============
 sudo systemctl stop ManageBots.service
 sudo systemctl disable ManageBots.service
 sudo rm -fv /lib/systemd/system/ManageBots.service
+
+#======== Удаление папки проекта =============
+sudo rm -rfv "$PROJECT_NAME"
 
 #============ Остановка ботов ================
 #sudo systemctl stop bot_*

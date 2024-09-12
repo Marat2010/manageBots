@@ -12,8 +12,8 @@ if [ -z "$PROJECT_NAME" ]; then
 fi
 
 #=======================================================
-read -rp "=== Укажите на каком порту будет работать бот (WEB_SERVER_PORT) [15001]: " port
-if [ -z "$port" ]; then port=15001; fi
+read -rp "=== Укажите на каком порту будет работать бот (WEB_SERVER_PORT) [9001]: " port
+if [ -z "$port" ]; then port=9001; fi
 printf "    Установим: WEB_SERVER_PORT=%s\n\n" "$port "
 
 read -rp "=== Укажите токен бота (TOKEN_TG) [66xx:AA......JQ]: " token
@@ -37,7 +37,7 @@ echo "# =================== DB ============================
 DATABASE_URL_SQLITE='./DB/mb.sqlite3'
 
 #============ TELEGRAM (WEB SERVER local) ===========
-WEB_SERVER_PORT=$port  # Для каждого бота, должен быть уникален, начиная с 15001 ..
+WEB_SERVER_PORT=$port  # Для каждого бота, должен быть уникален, начиная с 9001 ..
 WEB_SERVER_HOST=127.0.0.1
 TOKEN_TG=$token
 

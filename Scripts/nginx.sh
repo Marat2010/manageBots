@@ -4,6 +4,7 @@
 # Запуск в шеле: ./Scripts/nginx_prepare.sh 178.1.1.1
 # Первый параметр $1 - public_ip, внешний IP адрес (пример 178.1.1.1)
 
+echo
 if [ "$USER" != "root" ]; then
   sudo chown -Rv "$USER" /etc/nginx/conf.d
 fi
