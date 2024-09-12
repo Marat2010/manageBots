@@ -10,7 +10,7 @@ fi
 
 if [ ! -d "/etc/nginx/conf.d/bots" ]; then
   printf "\n Создаем директорию '/etc/nginx/conf.d/bots',\n где будем хранить конфигурации переадресации для управляемых нами ботов\n"
-  mkdir -pv /etc/nginx/conf.d/bots
+  sudo mkdir -pv /etc/nginx/conf.d/bots
 fi
 
 #=====================================================
@@ -38,7 +38,7 @@ if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
 
     include /etc/nginx/conf.d/bots/*.conf;
 }
-  " > /etc/nginx/conf.d/manageBots.conf
+  " | sudo tee /etc/nginx/conf.d/manageBots.conf
 
   printf "=== Файлы конфигурации Nginx создан (manageBots.conf)! ===\n"
 
@@ -71,7 +71,7 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
     proxy_pass http://localhost:12000;
   }
 }
-  " > /etc/nginx/conf.d/api_manageBots.conf
+  " | sudo tee /etc/nginx/conf.d/api_manageBots.conf
   printf "=== Файлы конфигурации Nginx создан (api_manageBots.conf)! ===\n"
 
 else

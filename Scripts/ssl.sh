@@ -13,8 +13,8 @@ fi
 
 if [ ! -f "/etc/ssl/nginx/$1.self.crt" ]; then
   printf "\n=== Формируем самоподписанные сертификаты и ключи ===\n"
-  openssl genrsa -out /etc/ssl/nginx/"$1".self.key 2048
-  openssl req -new -x509 -days 3650 -subj "/C=RU/ST=RT/L=KAZAN/O=SUBota/OU=IT/CN=$1/emailAddress=smg_2006@list.ru" -key /etc/ssl/nginx/"$1".self.key -out /etc/ssl/nginx/"$1".self.crt
+  sudo openssl genrsa -out /etc/ssl/nginx/"$1".self.key 2048
+  sudo openssl req -new -x509 -days 3650 -subj "/C=RU/ST=RT/L=KAZAN/O=SUBota/OU=IT/CN=$1/emailAddress=smg_2006@list.ru" -key /etc/ssl/nginx/"$1".self.key -out /etc/ssl/nginx/"$1".self.crt
 fi
 
 #==========================

@@ -20,10 +20,12 @@ fi
 rm -rfv "$PROJECT_NAME"
 
 #=========== Остановка сервиса ===============
+sudo systemctl stop ManageBots.service
 sudo systemctl disable ManageBots.service
 sudo rm -fv /lib/systemd/system/ManageBots.service
 
 #============ Остановка ботов ================
+#sudo systemctl stop bot_*
 #sudo systemctl disable bot_*
 sudo rm -fv /lib/systemd/system/bot_*
 

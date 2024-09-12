@@ -17,26 +17,26 @@ read -rp "=== Сменить у пользователя 'root' пароль? [y
 
 if [ "$change_passwd_root" == "y" ]
 then
-    passwd root
+    sudo passwd root
 fi
 
 #======================================================
 echo "===== Update пакетов ====="
-apt update
+sudo apt update
 
 #======================================================
 echo
 read -rp "=== Установить FTP сервер? [y/N] - по умолчанию нет(Enter): " confirm
 if [ "$confirm" == "y" ]; then
     echo "=== Инструкция: https://help.reg.ru/support/servery-vps/oblachnyye-servery/ustanovka-programmnogo-obespecheniya/kak-ustanovit-ftp-server-na-ubuntu ==="
-    apt -y install vsftpd
-    systemctl enable vsftpd.service
+    sudo apt -y install vsftpd
+    sudo systemctl enable vsftpd.service
 fi
 
 #-----------------------------------------------------
 echo
 echo "=== FTP: Настройка сервера ==="
-cp /etc/vsftpd.conf /etc/vsftpd.conf.original
+sudo cp /etc/vsftpd.conf /etc/vsftpd.conf.original
 
 echo "
 listen=YES
@@ -65,9 +65,9 @@ rsa_cert_file=/etc/ssl/private/vsftpd.pem
 rsa_private_key_file=/etc/ssl/private/vsftpd.pem
 ssl_enable=NO
 allow_anon_ssl=YES
-" > /etc/vsftpd.conf
+" | sudo tee /etc/vsftpd.conf >/dev/null
 
-echo "root" > /etc/vsftpd.userlist
+echo "root" | sudo tee /etc/vsftpd.userlist
 #-----------------------------------------------------
 printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
@@ -76,10 +76,10 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 echo
 read -rp "=== Разрешить доступ root-у по ftp? [y/N] - по умолчанию нет(Enter) " confirm
 if [ "$confirm" == "y" ]; then
-  cp /etc/ftpusers /etc/ftpusers_"$(date +%d-%m-%Y_%T)"
-  sed -i 's/root/# root/' /etc/ftpusers
-  cat /etc/ftpusers
-  systemctl restart vsftpd.service
+  sudo cp /etc/ftpusers /etc/ftpusers_"$(date +%d-%m-%Y_%T)"
+  sudo sed -i 's/root/# root/' /etc/ftpusers
+  sudo cat /etc/ftpusers
+  sudo systemctl restart vsftpd.service
   echo
   echo "========================================================================================="
   echo "==== Для отмены доступа root-a по ftp раскомментируйте '# root' в файле /etc/ftpusers ==="
@@ -131,8 +131,8 @@ read -rp "=== Отключить dhclient6? [y/N] - по умолчанию не
 if [ "$confirm" == "y" ]; then
   echo
   echo "=== Отключение dhclient6 ==="
-  systemctl stop dhclient6.service
-  systemctl disable dhclient6.service
+  sudo systemctl stop dhclient6.service
+  sudo systemctl disable dhclient6.service
 fi
 
 #========================================================
@@ -146,18 +146,10 @@ cp -vR "$HOME/manageBots/Scripts/.config/mc/*" "$HOME/.config/mc/"
 
 #=======================================================
 echo 
-read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
+proj_name="manageBots"
+printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
 
-if [ -z "$proj_name" ]
-then
-    proj_name="manageBots"
-    printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
-else
-    printf "\n=== Переносим проект 'manageBots' в -> %s \n" "'$proj_name'"
-    mv -fv manageBots $proj_name
-fi
-
-cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; }
+cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; exit 1; }
 pwd
 ls -al
 
@@ -242,7 +234,6 @@ if [ "$run_service" == "y" ]; then
 fi
 
 printf "\n\n====== Информация для проверки =========================\n"
-public_ip="$(wget -q -O - ipinfo.io/ip)"
 
 printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
 printf "\n=== API - Менеджер ботов (swagger): https://%s:5080/docs ===  \n" "$public_ip"
@@ -252,6 +243,24 @@ printf "\n==========================================================\n"
 
 #=======================================================
 #=======================================================
+#=======================================================
+##=======================================================
+#echo
+#read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
+#
+#if [ -z "$proj_name" ]
+#then
+#    proj_name="manageBots"
+#    printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
+#else
+#    printf "\n=== Переносим проект 'manageBots' в -> %s \n" "'$proj_name'"
+#    mv -fv manageBots $proj_name
+#fi
+#
+#cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; }
+#pwd
+#ls -al
+##=======================================================
 #=======================================================
 #mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
 #mv our_Bots/bot_15002/.env_example_bot our_Bots/bot_15002/.env_bot
@@ -266,6 +275,8 @@ printf "\n==========================================================\n"
 #sudo systemctl daemon-reload
 #sudo systemctl enable ManageBots.service
 #sudo systemctl start ManageBots.service
+#=======================================================
+#" > /etc/vsftpd.conf
 #=======================================================
 #pip install aiogram==3.10.0
 #pip freeze > requirements.txt
