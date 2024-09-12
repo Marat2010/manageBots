@@ -5,7 +5,8 @@
 
 echo "=== !!! Выполнять под пользователем root !!! ==="
 
-if [ "$USER" != 'root' ]; then
+#if [ "$USER" != 'root' ]; then
+if [ "$USER" != 'root' ] && [ "$USER" != 'marat' ]; then
     echo "=== Вы пользователь '$USER', необходимо запустить под пользователем: 'root'!"
     exit 1
 fi
