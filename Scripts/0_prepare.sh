@@ -70,7 +70,7 @@ allow_anon_ssl=YES
 echo "root" > /etc/vsftpd.userlist
 #-----------------------------------------------------
 printf "\n\n=== FTP: Формирование SSL-сертификата  ===\n"
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=1/emailAddress=em"
 
 #-----------------------------------------------------
 echo
