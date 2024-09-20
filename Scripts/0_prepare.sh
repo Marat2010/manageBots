@@ -184,8 +184,8 @@ read -rp "=== Если прочитали, для продолжения наж�
 
 #=======================================================
 printf "\n=== Предварительная подготовка Nginx конфигурации ===\n"
-public_ip="$(wget -q -O - ipinfo.io/ip)"
 
+public_ip="$(wget -q -O - ipinfo.io/ip)"
 read -rp "=== Введите IP адрес сервера VPS:($public_ip - по умолчанию (Enter))" set_ip
 
 if [ -n "$set_ip" ]; then
@@ -193,8 +193,18 @@ if [ -n "$set_ip" ]; then
 fi
 echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
 
+#-------------------------
+app_port=8900
+read -rp "=== Введите локальный порт для приложения API:(8900 - по умолчанию (Enter))" set_port
+
+if [ -n "$set_port" ]; then
+    app_port=$set_port
+fi
+echo "APP_PORT='$app_port'" | sudo tee -a /etc/environment
+
+#-------------------------
 ./Scripts/ssl.sh "$public_ip"
-./Scripts/nginx.sh "$public_ip"
+./Scripts/nginx.sh "$public_ip $app_port"
 
 #=======================================================
 printf "\n\n=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===\n"
@@ -218,10 +228,6 @@ if [ "$run_service" == "y" ]; then
 
     ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'    
 
-    # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
-    # ExecStart=$HOME/$proj_name/Run_manage.sh
-
-
     [Install]
     WantedBy=multi-user.target
     " > "$HOME/$proj_name/ManageBots.service"
@@ -244,6 +250,9 @@ printf "\n==========================================================\n"
 #=======================================================
 #=======================================================
 #=======================================================
+##=======================================================
+    # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
+    # ExecStart=$HOME/$proj_name/Run_manage.sh
 ##=======================================================
 #echo
 #read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name

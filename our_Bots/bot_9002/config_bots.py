@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     WEB_SERVER_PORT: int        # Установите в ".env_bot" номер свободного порта из диапозона 15001-65535
     BASE_WEBHOOK_URL: str = "https://178.1.1.1:8443"
 
-    model_config = SettingsConfigDict(env_file=f'./our_Bots/bot_SetPort/.env_bot', env_file_encoding='utf-8', extra='ignore')
+    model_config = SettingsConfigDict(env_file=f'./our_Bots/bot_9002/.env_bot', env_file_encoding='utf-8', extra='ignore')
     # Начиная со второй версии pydantic, настройки класса настроек задаются через model_config
     # В данном случае будет использоваться файла .env, который будет прочитан с кодировкой UTF-8
     # Пример пути файла на 2 уровня вверх: env_file='../../.env', или в "utils": env_file='utils/.env'

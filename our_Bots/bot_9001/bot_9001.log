@@ -1,0 +1,36 @@
+2024-09-20 12:41:42,541 [ERROR] [config_bots] [get_from_DB]: === Ошибка: e= OperationalError('no such table: bots') ====
+
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<module>]: === Получение данных с БД: ===
+None
+
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<module>]: === Настройки: ===
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<module>]: WEBHOOK_SSL_CERT= '/etc/ssl/nginx/178.205.54.89.self.crt'
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<module>]: WEBHOOK_SSL_KEY= '/etc/ssl/nginx/178.205.54.89.self.key'
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<module>]: LOG_FILE= './our_Bots/bot_9001/bot_9001.log'
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('DATABASE_URL_SQLITE', './DB/mb.sqlite3')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('SELF_SSL', True)
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('PUBLIC_IP', '178.205.54.89')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('WEBHOOK_PATH_BASE', '/bot/')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('WEBHOOK_SECRET', 'change_secret_2024')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('TOKEN_TG', '6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('WEB_SERVER_HOST', '127.0.0.1')
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('WEB_SERVER_PORT', 9001)
+2024-09-20 12:41:42,541 [INFO] [config_bots] [<listcomp>]: ('BASE_WEBHOOK_URL', 'https://178.205.54.89:8443')
+2024-09-20 12:51:21,078 [ERROR] [config_bots] [get_from_DB]: === Ошибка: e= OperationalError('no such table: bots') ====
+
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<module>]: === Получение данных с БД: ===
+None
+
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<module>]: === Настройки: ===
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<module>]: WEBHOOK_SSL_CERT= '/etc/ssl/nginx/178.205.54.89.self.crt'
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<module>]: WEBHOOK_SSL_KEY= '/etc/ssl/nginx/178.205.54.89.self.key'
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<module>]: LOG_FILE= './our_Bots/bot_9001/bot_9001.log'
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('DATABASE_URL_SQLITE', './DB/mb.sqlite3')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('SELF_SSL', True)
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('PUBLIC_IP', '178.205.54.89')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('WEBHOOK_PATH_BASE', '/bot/')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('WEBHOOK_SECRET', 'change_secret_2024')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('TOKEN_TG', '6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('WEB_SERVER_HOST', '127.0.0.1')
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('WEB_SERVER_PORT', 9001)
+2024-09-20 12:51:21,078 [INFO] [config_bots] [<listcomp>]: ('BASE_WEBHOOK_URL', 'https://178.205.54.89:8443')

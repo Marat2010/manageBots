@@ -1,0 +1,12 @@
+.venv*
+.idea
+.git
+__*
+venv*
+Old_*
+My_*
+my_*
+.My_*
+.my_*
+
+requirements_*.txt

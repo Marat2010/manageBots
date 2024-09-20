@@ -1,0 +1,18 @@
+
+  [Unit]
+  Description=Aiogram3 bot_9002 service
+  After=multi-user.target
+
+  [Service]
+  User=root
+  Group=root
+  Type=idle
+  Restart=on-failure
+
+  EnvironmentFile=/etc/environment
+
+  ExecStart=/usr/bin/bash -c 'cd /home/marat/PycharmProjects/manageBots && source .venv/bin/activate && python ./our_Bots/bot_9002/main.py'
+
+  [Install]
+  WantedBy=multi-user.target
+  

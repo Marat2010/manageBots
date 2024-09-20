@@ -1,0 +1,13 @@
+2024-09-20 22:55:32,616 [WARNING] [main] [<module>]: === Настройки: ===
+2024-09-20 22:55:32,616 [WARNING] [main] [<module>]: BASE_WEBHOOK_URL= 'https://178.205.54.89:8443'
+2024-09-20 22:55:32,616 [WARNING] [main] [<module>]: WEBHOOK_SSL_CERT= '/etc/ssl/nginx/178.205.54.89.self.crt'
+2024-09-20 22:55:32,616 [WARNING] [main] [<module>]: WEBHOOK_SSL_KEY= '/etc/ssl/nginx/178.205.54.89.self.key'
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('DATABASE_URL_SQLITE', 'sqlite+pysqlite:///./DB/manbot.sqlite3')
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('SELF_SSL', True)
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('PUBLIC_IP', '178.205.54.89')
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('APP_PORT', 8090)
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('WEBHOOK_PATH', '/bot/')
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('WEBHOOK_SECRET', 'sEcrEet2-24')
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('WEB_SERVER_HOST', '127.0.0.1')
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('START_WEB_SERVER_PORT', 9000)
+2024-09-20 22:55:32,616 [WARNING] [main] [<listcomp>]: ('LOG_MANAGE', 'manageBots.log')
