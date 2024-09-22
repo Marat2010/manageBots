@@ -91,9 +91,9 @@ class BotsOrm(Base):  # Многие к одному
 
     @classmethod
     def by_port_get(cls, port: int):
-        # generator = get_db()
-        # db_session = next(generator)
-        db_session: Session = Depends(get_db)
+        generator = get_db()
+        db_session = next(generator)
+        # db_session: Session = Depends(get_db)
         bot = db_session.query(cls).filter(cls.web_server_port == port).first()
         return bot
 
