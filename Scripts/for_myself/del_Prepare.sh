@@ -23,12 +23,14 @@ sudo rm -fv /lib/systemd/system/ManageBots.service
 
 #======== Удаление папки проекта =============
 sudo rm -rfv "$PROJECT_NAME"
-sudo rm -rfv "manageBots"
+#sudo rm -rfv "manageBots"
 
 #============ Остановка ботов ================
 #sudo systemctl stop bot_*
 #sudo systemctl disable bot_*
 sudo rm -fv /lib/systemd/system/bot_*
+sudo systemctl daemon-reload
+sudo systemctl restart nginx.service
 
 #========= Удаление настроек Nginx =============
 sudo rm -fv /etc/nginx/conf.d/manageBots.conf
