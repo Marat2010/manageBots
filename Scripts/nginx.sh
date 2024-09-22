@@ -36,7 +36,7 @@ if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
       <hr><h2>Менеджер ботов (проверка Nginx):</h2>
       <h3>&emsp;<i>Основная конфигурация:</i> /etc/nginx/conf.d/manageBots.conf<br><br>
       &emsp;<i>Конфигурация ботов:</i> /etc/nginx/conf.d/bots/...</h3><hr>
-      <h4>API manageBots local: http://127.0.0.1:$2</h4>';
+      <h4>API manageBots local: http://127.0.0.1:$2</h4>
       <h4>API manageBots remote: https://$1:5900</h4>';
   }
 
