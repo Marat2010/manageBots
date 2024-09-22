@@ -93,7 +93,7 @@ class BotsOrm(Base):  # Многие к одному
     def by_port_get(cls, port: int):
         generator = get_db()
         db_session = next(generator)
-        # db_session: Session = Depends(get_db)
+
         bot = db_session.query(cls).filter(cls.web_server_port == port).first()
         return bot
 
@@ -118,11 +118,7 @@ class BaseWebhookUrlOrm(Base):  # Одна запись для многих бо
 
 # ================================================================
 # ================================================================
-    # base_webhook_url: Mapped[str_256] = mapped_column(default=BASE_WEBHOOK_URL)
-    # base_webhook_url: Mapped["BaseWebhookUrlModel"] = relationship(back_populates="bot")
-    # base_webhook_url: Mapped["BaseWebhookUrlModel"] = relationship(back_populates="bots")
-    # url: Mapped["BaseWebhookUrlModel"] = relationship(back_populates="bots")
-    # url: Mapped[BaseWebhookUrlModel | None] = relationship(back_populates="bots")
+# db_session: Session = Depends(get_db)
 # ================================================================
     # base_webhook_url: Mapped[str_256] = mapped_column(default=config_Manage.BASE_WEBHOOK_URL)
 # =========================================
