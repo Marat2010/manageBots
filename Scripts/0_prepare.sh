@@ -138,7 +138,7 @@ fi
 #========================================================
 echo
 echo "=== Копирование проекта в каталог пользователя '$PWD' ==="
-git clone https://github.com/Marat2010/manageBots/tree/v2
+git clone -b v2 https://github.com/Marat2010/manageBots
 wait
 
 mkdir -v "$HOME/.config/mc"
