@@ -58,7 +58,7 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
   echo "server {
   server_name _;
 
-  listen 5080 ssl;
+  listen 5900 ssl;
 
   ssl_certificate       /etc/ssl/nginx/$1.self.crt;
   ssl_certificate_key   /etc/ssl/nginx/$1.self.key;
@@ -71,7 +71,7 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     proxy_redirect off;
     proxy_buffering off;
-    proxy_pass http://localhost:$2;
+    proxy_pass http://127.0.0.1:$2;
   }
 }
   " | sudo tee /etc/nginx/conf.d/api_manageBots.conf

@@ -226,7 +226,7 @@ if [ "$run_service" == "y" ]; then
     EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
-    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port $app_port --reload'
+    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port --reload'
 
     [Install]
     WantedBy=multi-user.target
@@ -242,7 +242,7 @@ fi
 printf "\n\n====== Информация для проверки =========================\n"
 
 printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
-printf "\n=== API - Менеджер ботов (swagger): https://%s:5080/docs ===  \n" "$public_ip"
+printf "\n=== API - Менеджер ботов (swagger): https://%s:5900/docs ===  \n" "$public_ip"
 printf "\n=== Проверка токена: https://api.telegram.org/bot661....:AA...JQ/getWebhookInfo ===  \n"
 printf "\n==========================================================\n"
 
