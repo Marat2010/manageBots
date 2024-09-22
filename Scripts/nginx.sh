@@ -35,7 +35,8 @@ if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
     return 200 '<!DOCTYPE html><meta charset=\'utf-8\'>
       <hr><h2>Менеджер ботов (проверка Nginx):</h2>
       <h3>&emsp;<i>Основная конфигурация:</i> /etc/nginx/conf.d/manageBots.conf<br><br>
-      &emsp;<i>Конфигурация ботов:</i> /etc/nginx/conf.d/bots/...</h3><hr>';
+      &emsp;<i>Конфигурация ботов:</i> /etc/nginx/conf.d/bots/...</h3><hr><br>
+      <h4>MB local: http://localhost:$2</h4>';
   }
 
     include /etc/nginx/conf.d/bots/*.conf;
