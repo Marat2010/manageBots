@@ -256,21 +256,6 @@ printf "\n==========================================================\n"
     # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
     # ExecStart=$HOME/$proj_name/Run_manage.sh
 ##=======================================================
-#echo
-#read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
-#
-#if [ -z "$proj_name" ]
-#then
-#    proj_name="manageBots"
-#    printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
-#else
-#    printf "\n=== Переносим проект 'manageBots' в -> %s \n" "'$proj_name'"
-#    mv -fv manageBots $proj_name
-#fi
-#
-#cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; }
-#pwd
-#ls -al
 ##=======================================================
 #=======================================================
 #mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
@@ -282,20 +267,4 @@ printf "\n==========================================================\n"
 #  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
 #  sed 's/root/# root/' /etc/ftpusers
 #=======================================================
-#sudo cp $HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
-#sudo systemctl daemon-reload
-#sudo systemctl enable ManageBots.service
-#sudo systemctl start ManageBots.service
-#=======================================================
-#" > /etc/vsftpd.conf
-#=======================================================
-#pip install aiogram==3.10.0
-#pip freeze > requirements.txt
-#=======================================================
-
-
-
-
-
-
 
