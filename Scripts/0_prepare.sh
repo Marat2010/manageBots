@@ -141,6 +141,7 @@ echo "=== Копирование проекта в каталог пользов
 git clone -b v2 https://github.com/Marat2010/manageBots
 wait
 
+mkdir -v "$HOME/.config"
 mkdir -v "$HOME/.config/mc"
 cp -vR "$HOME/manageBots/Scripts/.config/mc/*" "$HOME/.config/mc/"
 
