@@ -226,7 +226,7 @@ if [ "$run_service" == "y" ]; then
     EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
-    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port --reload'
+    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port'
 
     [Install]
     WantedBy=multi-user.target
@@ -251,6 +251,7 @@ printf "\n==========================================================\n"
 #=======================================================
 #=======================================================
 ##=======================================================
+#    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port --reload'
     # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
     # ExecStart=$HOME/$proj_name/Run_manage.sh
 ##=======================================================
