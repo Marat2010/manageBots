@@ -138,7 +138,7 @@ fi
 #========================================================
 echo
 echo "=== Копирование проекта в каталог пользователя '$PWD' ==="
-git clone https://github.com/Marat2010/manageBots
+git clone https://github.com/Marat2010/manageBots/tree/v2
 wait
 
 mkdir -v "$HOME/.config/mc"
@@ -204,7 +204,7 @@ echo "APP_PORT='$app_port'" | sudo tee -a /etc/environment
 
 #-------------------------
 ./Scripts/ssl.sh "$public_ip"
-./Scripts/nginx.sh "$public_ip $app_port"
+./Scripts/nginx.sh "$public_ip" "$app_port"
 
 #=======================================================
 printf "\n\n=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===\n"
