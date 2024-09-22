@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     # === Telegram settings for bots ===
     SELF_SSL: bool = True  # Для случаев, когда нет нормального сертификата на домен или IP
     PUBLIC_IP: str | None = None  # Внешний IP адрес
-    APP_PORT: int = 8090  # Локальный порт для приложения API
+    APP_PORT: int = 8900  # Локальный порт для приложения API
 
     WEBHOOK_PATH: str = "/bot/"  # Часть полного пути вебхук урла (BASE_WEBHOOK_URL + WEBHOOK_PATH + токен)
     WEBHOOK_SECRET: str = "chaNge_secreT2024"  # Безопасность (входящие запросы исходят от ТГ сервера).
