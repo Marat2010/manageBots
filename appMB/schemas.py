@@ -2,8 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
 from appMB.config_m import config_M, BASE_WEBHOOK_URL
-# from .models import ActiveBot
-from appMB.models import ActiveBot, BaseWebhookUrlOrm
+from appMB.models import ActiveBot
 
 
 class SUrlBase(BaseModel):

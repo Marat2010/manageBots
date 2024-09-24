@@ -7,14 +7,12 @@ import os
 import sys
 
 import uvicorn
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import exc, insert
-from sqlalchemy.orm import Session
+from fastapi import FastAPI
 
 from appMB.config_m import (config_M, logging, BASE_WEBHOOK_URL,
                             WEBHOOK_SSL_CERT, WEBHOOK_SSL_KEY)
 
-from appMB.routers import router, add_url_bwh, get_db, add_first_urls
+from appMB.routers import router, add_first_urls
 from appMB.database import create_tables
 
 
@@ -25,20 +23,15 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))  # added path "/home
 app = FastAPI(
     title='Система управления ботами - СУБота©',
     description='API - Менеджер ботов СУБота©️ (manageBots)',
-    # title='API - Менеджер ботов',
-    # description='Система управления ботами - СУБота&#169;',
-    # logging=fastapi_logger
 )
 
 
-# Создаем таблицы
 @app.on_event("startup")
 def on_startup():
-    create_tables()
+    create_tables()  # Создаем таблицы
     add_first_urls()  # добваление в базу первого вебхук урла (BASE_WEBHOOK_URL)
 
 
-# app.include_router(bots.router)
 app.include_router(router)
 
 logging.warning(f"=== Настройки: ===")
@@ -49,15 +42,20 @@ logging.warning(f"{WEBHOOK_SSL_KEY= }")
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port= config_M.APP_PORT, log_level="info", reload=True)
-    # uvicorn.run("main:app", host="127.0.0.1", port=8090, log_level="info", reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=config_M.APP_PORT, log_level="info", reload=True)
 
 # Запуск 2 с терминала:
 # uvicorn appMB.main:app --host 127.0.0.1 --port 8090 --reload
-# --reload убрать в рабочем проекте, т.к. будет идти перезапуск при каждом добвалении и удалении
-# бота (т.к. меняется отслеживаемвая в проекте папка "our_Bots/..")
+
 print("============ E N D ============")
 
-# ==================================================
-# ==================================================
 
+# ==========================================================
+# ==========================================================
+# Запуск через systemd (без "--reload"):
+# ExecStart=/usr/bin/bash -c ('cd /root/manageBots && source .venv/bin/activate && .venv/bin/uvicorn'
+#                             ' appMB.main:app --host 127.0.0.1 --port 8900')
+# ==========================================================
+# "--reload" убрать в рабочем проекте, т.к. будет идти перезапуск при каждом добвалении и удалении
+# бота (т.к. меняется отслеживаемвая в проекте папка "our_Bots/..")
+# ==========================================================

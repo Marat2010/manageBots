@@ -1,13 +1,11 @@
 import datetime
 import enum
-from typing import Annotated, List, Optional,  Set
+from typing import Annotated, List
 
-from fastapi import Depends
-from sqlalchemy import func, ForeignKey, Table, Column, Integer, String, MetaData, text
-from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
+from sqlalchemy import func, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from appMB.database import Base, get_db
-from config_m import config_M, BASE_WEBHOOK_URL
 
 intpk = Annotated[int, mapped_column(primary_key=True)]
 str_256 = Annotated[str, 256]
@@ -26,7 +24,7 @@ class ActiveBot(enum.Enum):
     No = "Нет"
 
 
-class OwnerModel(Base):
+class OwnerOrm(Base):
     __tablename__ = 'owner'
     __table_args__ = {'extend_existing': True}
 
@@ -34,28 +32,14 @@ class OwnerModel(Base):
     name:  Mapped[str_256]
     email: Mapped[str_256]
 
-    # def __str__(self):
-    #     return (f"{self.__class__.__name__}(id={self.id}, "
-    #             f"name={self.name!r},"
-    #             f"email={self.email!r},"
-    #             )
-    #
-    # def __repr__(self):
-    #     return str(self)
+    def __str__(self):
+        return (f"{self.__class__.__name__}(id={self.id}, "
+                f"name={self.name!r},"
+                f"email={self.email!r},"
+                )
 
-
-    # url: Mapped[str_256] = mapped_column(default=BASE_WEBHOOK_URL)
-    # bot: Mapped[Set["BotsOrm"]] = relationship(back_populates="base_webhook_url")
-    # bot: Mapped[List["BotsOrm"]] = relationship(back_populates="url")
-
-    # def __str__(self):
-    #     return (f"{self.__class__.__name__}(id={self.id}, "
-    #             f"name={self.bot!r},"
-    #             # f"email={self.email!r},"
-    #             )
-    #
-    # def __repr__(self):
-    #     return str(self)
+    def __repr__(self):
+        return str(self)
 
 
 class BotsOrm(Base):  # Многие к одному
@@ -109,7 +93,6 @@ class BaseWebhookUrlOrm(Base):  # Одна запись для многих бо
     def __str__(self):
         return (f"{self.__class__.__name__}(id={self.id}, "
                 f"url={self.url!r},"
-                # f" base_webhook_url={self.base_webhook_url!r},"
                 )
 
     def __repr__(self):
@@ -118,33 +101,4 @@ class BaseWebhookUrlOrm(Base):  # Одна запись для многих бо
 
 # ================================================================
 # ================================================================
-# db_session: Session = Depends(get_db)
-# ================================================================
-    # base_webhook_url: Mapped[str_256] = mapped_column(default=config_Manage.BASE_WEBHOOK_URL)
-# =========================================
-# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(os.path.dirname(os.path.abspath(__file__ + "/../")))
-# print("====0000-----", os.path.dirname(os.path.abspath(__file__)))
-# print("====0001-----", os.path.dirname(os.path.abspath(__file__ + "/../")))
-#
-# from config_manage import config
-# =========================================
-# sys.path.insert(1, os.path.join(sys.path[0], '..'))
-# =========================================
-# created_at = Annotated[datetime, mapped_column(
-    # server_default=datetime.now(timezone.utc))]
-
-    # server_default=text("DATETIME()"))]
-    # server_default=text("datetime.datetime.now(tz=datetime.timezone.utc)"))]
-    # server_default=text("datetime.datetime.utcnow"))]
-
-    # created_at: Mapped[datetime.datetime] = mapped_column(server_default=func.now())
-    # updated_at: Mapped[datetime.datetime] = mapped_column(server_default=func.now(), onupdate=func.now())
-
-
-# tz = datetime.datetime("TIMEZONE('utc', now())")
-# print(f"{tz=}")
-# tz1 = datetime.datetime.now(tz=datetime.timezone.utc)
-# tz1 = datetime.datetime.utcnow()
-# print(f"{tz1=}")
 

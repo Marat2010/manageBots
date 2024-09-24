@@ -8,7 +8,7 @@ from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.exceptions import (TelegramUnauthorizedError, TelegramBadRequest,
                                 TelegramNotFound)
 from aiogram.types import FSInputFile, User
-from aiogram.utils.token import TokenValidationError, validate_token
+from aiogram.utils.token import TokenValidationError
 from fastapi import HTTPException
 
 from appMB.models import ActiveBot, BotsOrm
@@ -34,11 +34,11 @@ class ServerPort:
 
         while True:
             cls.web_server_port += 1
-            print("+++++======== cls.web_server_port :", cls.web_server_port)
+            logging.info("+++++======== cls.web_server_port :", cls.web_server_port)
 
             # Проверка на то, что порт не занят другим ботом (проверка в БД).
             if BotsOrm.by_port_get(cls.web_server_port) is not None:
-                print(f"=========== в БД такой порта есть: {cls.web_server_port}  =========")
+                logging.info(f"=========== в БД такой порта есть: {cls.web_server_port}  =========")
                 continue
 
             # ----------------------------------------
@@ -46,12 +46,11 @@ class ServerPort:
             # Проверка на то, что порт не занят в ОС (ss -nultp |grep порт)
             check_port = f"./Scripts/check_port.sh {cls.web_server_port}"
             proc = run_com(check_port)
-            print(f"====2== {proc.stdout =} =========")
-            print(f"====3== {proc.stderr =} =========")
+
             if proc.returncode == 1:  # выход, при условии, что порт не занят
                 break
             else:
-                print(f"=========== в ОС такой порт занят: {cls.web_server_port}  =========")
+                logging.info(f"=========== в ОС такой порт занят: {cls.web_server_port}  =========")
 
             # ----------------------------------------
 
@@ -195,7 +194,4 @@ def run_com(com_line: str):
 
 # ================================================
 # ================================================
-# ================================================
-# ================================================
-
 

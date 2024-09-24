@@ -1,17 +1,14 @@
-import pydantic
-from sqlalchemy import create_engine, text, insert
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
 import os
 import sys
-
-from appMB.config_m import config_M, BASE_WEBHOOK_URL  # for fastapi
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from appMB.config_m import config_M
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 sync_engine = create_engine(
     config_M.DATABASE_URL_SQLITE,
-    echo=True,
+    echo=False,
     connect_args={'check_same_thread': False},  # Только для SQLite
 )
 
@@ -42,11 +39,6 @@ def get_db():  #
 
 # ===================================
 # ===================================
-# ===================================
 # sync_engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
 # engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
 # ===================================
-# with engine.connect() as conn:
-#     res = conn.execute(text("SELECT 1"))
-
-

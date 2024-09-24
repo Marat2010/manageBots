@@ -143,7 +143,7 @@ wait
 
 mkdir -v "$HOME/.config"
 mkdir -v "$HOME/.config/mc"
-cp -vR "$HOME/manageBots/Scripts/.config/mc/*" "$HOME/.config/mc/"
+cp -vR "$HOME"/manageBots/Scripts/.config/mc/* "$HOME"/.config/mc/
 
 #=======================================================
 echo 
@@ -175,7 +175,7 @@ pip install -r requirements.txt
 
 #=======================================================
 printf "\n=== Подготовка файлов окружения ===\n"
-mv app/.env_example_manage app/.env_manage
+mv appMB/.env_example_m appMB/.env_m
 echo
 echo "=============================================================="
 echo "=== Отредактируйте при необходимости переменные окружения: ==="
@@ -249,22 +249,5 @@ printf "\n==========================================================\n"
 
 
 #=======================================================
-#=======================================================
-#=======================================================
-##=======================================================
-#    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port --reload'
-    # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
-    # ExecStart=$HOME/$proj_name/Run_manage.sh
-##=======================================================
-##=======================================================
-#=======================================================
-#mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
-#mv our_Bots/bot_15002/.env_example_bot our_Bots/bot_15002/.env_bot
-#=======================================================
-#=======================================================
-#ls -al | grep $proj_name
-#=======================================================
-#  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
-#  sed 's/root/# root/' /etc/ftpusers
 #=======================================================
 

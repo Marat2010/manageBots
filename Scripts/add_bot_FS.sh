@@ -117,24 +117,7 @@ fi
 #======================================================
 #  tar -zcvf .My_Archive/"$proj"_"$date_arh".tar.gz -X ./.My_Archive/Script/exclude_archive.txt "$proj"
 #======================================================
-#  echo
-#  read -rp "=== Запустить бота (bot_$port ) как службу? [y/N]: " run_service
-#
-#  if [ "$run_service" == "y" ]; then
-#======================================================
-#read -rp "=== Укажите на каком порту будет работать бот (WEB_SERVER_PORT) [9001]: " port
-#if [ -z "$port" ]; then port=9001; fi
-#  read -rp "=== Укажите токен бота (TOKEN_TG) [66xx:AA......JQ]: " token
-#  if [ -z "$token" ]; then token=66xx:AA......JQ; fi
-#======================================================
 #lsof -i|grep 9001
 #ss -nultp |grep 9001
 #======================================================
-##=============== Logs ================================
-#LOG_Bot_File='./our_Bots/bot_$port/bot_$port.log'
-##=====================================================
-#======================================================
-#    Environment='PROJECT_NAME=manageBots'
-#    ExecStart=/bin/bash -c 'cd $HOME/$PROJECT_NAME && source .venv/bin/activate && ./our_Bots/bot_$port/Run_bot.sh'
-#cp "./our_Bots/bot_example/.env_example_bot" "./our_Bots/bot_$port/.env_bot"
-#======================================================
+
