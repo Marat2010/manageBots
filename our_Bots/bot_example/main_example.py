@@ -136,8 +136,8 @@ def main() -> None:
     # ======= Добавлено ==========================
     if SELF_SSL:  # ==== For self-signed certificate ====
         # Generate SSL context
-        # context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)  # устарел
+        # context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)  # устарел
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         context.load_cert_chain(WEBHOOK_SSL_CERT, WEBHOOK_SSL_KEY)
 
         # And finally start webserver
