@@ -1,9 +1,9 @@
 # import logging
 from appMB.config_m import logging
-from typing import List
+from typing import List, Type
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import exc, insert, func
+from sqlalchemy import exc
 
 from appMB.config_m import BASE_WEBHOOK_URL, config_M
 from appMB.database import get_db
@@ -37,7 +37,7 @@ def get_bots(db_session: Session = Depends(get_db)) -> List[SBot]:
     return bots
 
 
-@router.get("/urls", summary="Получить все базовые части вебхук урлов ", tags=["Standard"])
+@router.get("/urls", summary="Получить все базовые части вебхук url-ов ", tags=["Standard"])
 def get_urls(db_session: Session = Depends(get_db)) -> List[SUrl]:
     url_models = db_session.query(BaseWebhookUrlOrm).all()
     urls = [SUrl.model_validate(url_model) for url_model in url_models]
@@ -201,13 +201,14 @@ def delete_by_token(token_tg, db_session: Session = Depends(get_db)) -> SBotDel:
 # ================================================
 # ============== Общее в методах =================
 # ================================================
-def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
+# def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
+def upd_bot(bot_model: Type[BotsOrm], data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = data['active']
-    bot_info = change_state_bot(bot_model)  # Активация или деактивация бота.
+    bot_info = change_state_bot(Type[bot_model])  # Активация или деактивация бота.
     bot_model.bot_username = bot_info.username
 
     try:
@@ -221,13 +222,14 @@ def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db
     return bot  # Можно сразу 'SBot.model_validate(bot_model)'
 
 
-def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
+# def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
+def del_bot(bot_model: Type[BotsOrm], db_session: Session = Depends(get_db)) -> SBotDel:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = ActiveBot.No  # Необходимо, чтобы отключить вебхук и удалить бота
-    bot_info = change_state_bot(bot_model, "Del")  # Отключение бота от вебхука
+    bot_info = change_state_bot(Type[bot_model], "Del")  # Отключение бота от вебхука
     bot_model.bot_username = bot_info.username  # МОЖНО УБРАТЬ
 
     db_session.delete(bot_model)
@@ -282,4 +284,3 @@ def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDe
 #     new_bot = SBot.model_validate(new_bot_model)
 #     return new_bot
 # ================================================
-
