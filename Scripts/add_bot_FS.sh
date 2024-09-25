@@ -39,7 +39,7 @@ if [ "$1" == "Yes" ]; then
   #=======================================================
   printf "\n === Формирования файла окружения для бота ===\n"
   echo "# =================== DB ============================
-  DATABASE_URL_SQLITE='./DB/mb.sqlite3'
+  DATABASE_URL_SQLITE='./DB/manbot.sqlite3'
 
   #============ TELEGRAM (WEB SERVER local) ===========
   WEB_SERVER_PORT=$port  # Для каждого бота, должен быть уникален, начиная с 9001 ..

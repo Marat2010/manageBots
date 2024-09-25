@@ -89,7 +89,7 @@ async def on_startup(bot: Bot) -> None:
         )
     else:
         await bot.set_webhook(f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}", secret_token=WEBHOOK_SECRET)
-    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST}:{WEB_SERVER_PORT}")
+    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST}:{WEB_SERVER_PORT} запустился")
     # ===============================================
 
 
@@ -98,7 +98,7 @@ async def on_shutdown(bot: Bot) -> None:
     """
     Graceful shutdown. This method is recommended by aiohttp docs.
     """
-    await bot.send_message(chat_id=241462113, text="Бот 1 CLOSE")
+    await bot.send_message(chat_id=241462113, text=f"Бот {WEB_SERVER_HOST}:{WEB_SERVER_PORT} выключен!!!")
     # Remove webhook.
     await bot.delete_webhook()
 
@@ -111,6 +111,7 @@ def main() -> None:
 
     # Register startup hook to initialize webhook
     dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
 
     # Initialize Bot instance with default bot properties which will be passed to all API calls
     bot = Bot(token=TOKEN_TG, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -163,20 +164,7 @@ if __name__ == "__main__":
 # ===========================================================
 # ===========================================================
 # ===========================================================
-# Your user ID: 241462113
-# Current chat ID: 241462113
-# Forwarded from: 6615142110
-# ===========================================================
     # session = AiohttpSession()
     # session._connector_init = {'ssl': False}
     # bot = Bot(token=TOKEN_TG, session=session, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-# ===========================================================
-# WEBHOOK_SECRET = config_bot.WEBHOOK_SECRET
-
-# if SELF_SSL:
-#     public_ip = requests.get('https://api.ipify.org').text
-#     print("=== IP Address ===", public_ip)
-#     public_ip = "178.204.228.105"  # убрать в реальном проекте
-#     WEBHOOK_SSL_CERT = "/etc/ssl/nginx/" + public_ip + ".self.crt"
-#     WEBHOOK_SSL_PRIV = "/etc/ssl/nginx/" + public_ip + ".self.key"
 # ===========================================================

@@ -1,16 +1,14 @@
 import logging
-import os
 import sqlite3
 
 import requests
-from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import SecretStr
 
 
 class Settings(BaseSettings):
     # ======= DB =======
-    DATABASE_URL_SQLITE: str = "./manbot.sqlite3"
+    # DATABASE_URL_SQLITE: str = "./manbot.sqlite3"
+    DATABASE_URL_SQLITE: str = "./DB/manbot.sqlite3"
 
     # === Telegram settings for bots ===
     SELF_SSL: bool = True  # Для случаев, когда нет нормального сертификата на домен или IP
@@ -72,6 +70,10 @@ def get_from_DB(web_server_port: int) -> tuple | None:
         with conn:
             cur = conn.cursor()
             bot_db = cur.execute('SELECT * FROM bots WHERE web_server_port=?', (web_server_port,)).fetchone()
+            url_bwh_id = bot_db[7]  # Получаем индекс, для получения "base_webhook_url"
+            url_bwh = cur.execute('SELECT url FROM base_webhook_url WHERE id=?', (url_bwh_id,)).fetchone()
+            bot_db = bot_db[:7] + (url_bwh[0],) + bot_db[8:]
+
     except sqlite3.Error as e:
         logging.error(f"=== Ошибка: {e= } ====\n")
         return None
@@ -96,73 +98,4 @@ logging.info(f"{LOG_FILE= }")
 
 # ==============================================================
 # ==============================================================
-# ==============================================================
-# model_config = SettingsConfigDict(env_file='./our_Bots/bot_15001/.env_bot', env_file_encoding='utf-8', extra='ignore')
-# model_config = SettingsConfigDict(env_file=f'.env_bot', env_file_encoding='utf-8', extra='ignore')
-# ==============================================================
-# port = os.environ.get("WEB_SERVER_PORT")
-# load_dotenv('/home/miguel/my_project/.env')
-# ==============================================================
-# LOG_FILE = config_bot.LOG_Bot_File
-# LOG_FILE = f"./our_Bots/bot_15001/logs/bot.log"
-# ==============================================================
-# logging.info(f"=== Настройки для бота: ===\n")
-# for i in config_bot:
-#     logging.info(f"{i}")
-# ==============================================================
-# cursor = conn.cursor()
-# logging.info(config_bot.TOKEN_TG.get_secret_value())
-# ==============================================================
-# print("DATABASE_URL_SQLITE:=======", config_bot.DATABASE_URL_SQLITE)
-# print("WEB_SERVER_PORT:=======", config_bot.WEB_SERVER_PORT)
-# ==============================================================
-# DATABASE_URL_SQLITE: str = "sqlite+pysqlite:///./DB/mb.sqlite3"
-# ==============================================================
-# ==============================================================
-    # data = data_to_dataDB(data_dict)  # Переводим словарь данных в кортеж, для последующего занесения в БД
-
-    # try:
-    #     cursor.execute("INSERT INTO payments (date,order_id,order_num,sum,customer_phone,customer_email,"
-    #                "products_name,payment_init) VALUES (?,?,?,?,?,?,?,?)", data)
-    #     # logging.info(f"=== Данные внесены. Файл БД Sqlite: {os.path.abspath(DB_SQLITE_NAME)} ===")
-    #
-    # except OperationalError as e:
-    #     # logging.warning(f" =! Нет Файла БД Sqlite !=: {e}")
-    #     # logging.warning(f"=! Данные НЕ внесены.!!! Создаем БД !=\n")
-    #     # create_DB()
-    #     # logging.info(f"=== Создан Файл БД Sqlite: {os.path.abspath(DB_SQLITE_NAME)} ===")
-    #     # logging.info("=== Повторяем последнюю операцию!!! ===\n")
-    #     add_payments(data)
-    #
-    # except ProgrammingError as e:
-    #     logging.error(f"=!!! Неверное количество предоставленных данных !!!=: {e}")
-    #
-    # except Exception as e:
-    #     logging.error(f" =!!! Ошибка !!!=: {e}")
-
-# ==============================================================
-    # model_config = SettingsConfigDict(env_file='.env_bot', env_file_encoding='utf-8', extra='ignore')
-    # model_config = SettingsConfigDict(env_file='.env_bot', env_file_encoding='utf-8', extra='ignore')
-    # model_config = SettingsConfigDict(env_file='bot1/.env', env_file_encoding='utf-8', extra='ignore')
-
-# ==============================================================
-# con = sqlite3.connect(f"./{config_bot.DATABASE_URL_SQLITE}")
-# conn = sqlite3.connect("./our_Bots/bot1/mb.sqlite3")
-# bot = cur.execute('SELECT * FROM bots').fetchone()
-# bot = cur.execute('SELECT * FROM bots WHRERE web_server_port=?', (web_server_port,)).fetchone()
-# # cursor.execute('select * from mb where WEB_SERVER_PORT=?', (WEB_SERVER_PORT,))
-# cursor.execute('select * from bots where WEB_SERVER_PORT=?', (WEB_SERVER_PORT,))
-# # cursor.execute('select * from bots')
-# rows = cursor.fetchall()
-# print("===rows ====    ", rows)
-# conn.commit()
-# bot = cur.execute('SELECT * FROM bots')
-#     # with sqlite3.connect(database) as conn:
-#     with conn as con:
-#         rows = cur.fetchall()
-#         for row in rows:
-#             print("---- Строки ---- ", row)
-# ==============================================================
-# print("=== Настройки: ===")  # Можно после закоментировать
-# [print(i) for i in config]
 
