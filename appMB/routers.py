@@ -142,7 +142,8 @@ def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> S
 # ============== For Manage bots ========================
 # ============ by web_server_port =======================
 
-@router.post("/get_by_port", tags=["Manage Bots by web_server_port"],
+# @router.post("/get_by_port", tags=["Manage Bots by web_server_port"],
+@router.get("/get_by_port", tags=["Manage Bots by web_server_port"],
              summary="Получить одного бота по фильтру 'web_server_port'")
 def get_by_port(bot: SBotGetByPort = Depends(),
                 db_session: Session = Depends(get_db)) -> SBot | dict:
@@ -174,7 +175,8 @@ def delete_by_port(web_server_port, db_session: Session = Depends(get_db)) -> SB
 # ============== For Manage bots ========================
 # ================ by token_tg ==========================
 
-@router.post("/get_by_token", tags=["Manage Bots by token_tg"],
+# @router.post("/get_by_token", tags=["Manage Bots by token_tg"],
+@router.get("/get_by_token", tags=["Manage Bots by token_tg"],
              summary="Получить одного бота по фильтру 'token_tg'")
 def get_by_token(bot: SBotGetByToken = Depends(),
                  db_session: Session = Depends(get_db)) -> SBot | dict:
