@@ -111,8 +111,18 @@ def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> S
     # data.update({"active": ActiveBot.No})
     logging.info(f"\n\n  ===== {data=} =====\n")
     new_bot_model = BotsOrm(**data)
-
     db_session.add(new_bot_model)
+
+    try:
+        db_session.flush()
+        db_session.commit()
+    except exc.IntegrityError as e:
+        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
+        # new_bot_model.active = ActiveBot.No  # Необходимо, чтобы отключить вебхук и удалить бота
+        # change_state_bot(new_bot_model, "Del")  # Отключение бота от вебхука
+        db_session.rollback()
+        ServerPort.set_web_server_port(new_bot_model.web_server_port-1)
+        raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
 
     # ======================================================================
     logging.info(f"\n\n  === Добавление бота: ===\n{new_bot_model=} \n")
@@ -122,15 +132,9 @@ def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> S
     if new_bot_model.bot_username is None:
         new_bot_model.bot_username = "Бот еще не запускался"
 
-    try:
-        db_session.flush()
-        db_session.commit()
-    except exc.IntegrityError as e:
-        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
-        db_session.rollback()
-        raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
-
     new_bot = SBot.model_validate(new_bot_model)
+    ServerPort.set_web_server_port(new_bot_model.web_server_port)  # Запомнить последний использованный порт
+
     return new_bot
 
 
@@ -201,14 +205,14 @@ def delete_by_token(token_tg, db_session: Session = Depends(get_db)) -> SBotDel:
 # ================================================
 # ============== Общее в методах =================
 # ================================================
-# def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
-def upd_bot(bot_model: Type[BotsOrm], data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
+# def upd_bot(bot_model: Type[BotsOrm], data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
+def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = data['active']
-    bot_info = change_state_bot(Type[bot_model])  # Активация или деактивация бота.
+    bot_info = change_state_bot(bot_model)  # Активация или деактивация бота.
     bot_model.bot_username = bot_info.username
 
     try:
@@ -222,20 +226,21 @@ def upd_bot(bot_model: Type[BotsOrm], data: dict, db_session: Session = Depends(
     return bot  # Можно сразу 'SBot.model_validate(bot_model)'
 
 
-# def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
-def del_bot(bot_model: Type[BotsOrm], db_session: Session = Depends(get_db)) -> SBotDel:
+# def del_bot(bot_model: Type[BotsOrm], db_session: Session = Depends(get_db)) -> SBotDel:
+def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
         raise HTTPException(status_code=404, detail="Бот не найден")
 
     bot_model.active = ActiveBot.No  # Необходимо, чтобы отключить вебхук и удалить бота
-    bot_info = change_state_bot(Type[bot_model], "Del")  # Отключение бота от вебхука
+    bot_info = change_state_bot(bot_model, "Del")  # Отключение бота от вебхука
     bot_model.bot_username = bot_info.username  # МОЖНО УБРАТЬ
 
     db_session.delete(bot_model)
     db_session.commit()
     bot_model.deleted = True  # Выставляем, чтобы в ответе было видно, что удален.
     bot = SBotDel.model_validate(bot_model)
+    ServerPort.set_web_server_port(bot_model.web_server_port)  # Запомнить последний использованный порт
     return bot  # Можно сразу 'SBot.model_validate(bot_model)'
 
 

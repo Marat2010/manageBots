@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 import shlex
 import subprocess
 
@@ -26,35 +27,47 @@ class ServerPort:
     web_server_port = config_M.START_WEB_SERVER_PORT
 
     @classmethod
+    def set_web_server_port(cls, web_server_port):
+        cls.web_server_port = web_server_port
+
+    @classmethod
     def get_web_server_port(cls) -> int | None:
         """
         Увеличение счетчика порта
         :return: новый "веб сервер порт" для бота
         """
 
+        web_server_port = cls.web_server_port
+
         while True:
-            cls.web_server_port += 1
-            logging.info("+++++======== cls.web_server_port :", cls.web_server_port)
+            web_server_port += 1
+            logging.info("+++++======== web_server_port :", web_server_port)
 
             # Проверка на то, что порт не занят другим ботом (проверка в БД).
-            if BotsOrm.by_port_get(cls.web_server_port) is not None:
-                logging.info(f"=========== в БД такой порта есть: {cls.web_server_port}  =========")
+            if BotsOrm.by_port_get(web_server_port) is not None:
+                logging.info(f"=========== в БД такой порта есть: {web_server_port}  =========")
+                continue
+
+            # ----------------------------------------
+
+            # Проверка на то, что нет такого каталога
+            if os.path.exists(f"./our_Bots/bot_{web_server_port}"):
                 continue
 
             # ----------------------------------------
 
             # Проверка на то, что порт не занят в ОС (ss -nultp |grep порт)
-            check_port = f"./Scripts/check_port.sh {cls.web_server_port}"
+            check_port = f"./Scripts/check_port.sh {web_server_port}"
             proc = run_com(check_port)
 
             if proc.returncode == 1:  # выход, при условии, что порт не занят
                 break
             else:
-                logging.info(f"=========== в ОС такой порт занят: {cls.web_server_port}  =========")
+                logging.info(f"=========== в ОС такой порт занят: {web_server_port}  =========")
 
             # ----------------------------------------
 
-        return cls.web_server_port
+        return web_server_port
 
 
 # ============ TG =============================

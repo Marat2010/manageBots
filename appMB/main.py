@@ -34,7 +34,7 @@ def on_startup():
 
 app.include_router(router)
 
-logging.warning(f"=== Настройки: ===")
+logging.warning(f"=== Настройки manageBots: ===")
 logging.warning(f"{BASE_WEBHOOK_URL= }")
 logging.warning(f"{WEBHOOK_SSL_CERT= }")
 logging.warning(f"{WEBHOOK_SSL_KEY= }")

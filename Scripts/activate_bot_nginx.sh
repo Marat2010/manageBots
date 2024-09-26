@@ -19,7 +19,7 @@ if [ "$1" == "Yes" ]; then
     proxy_buffering off;
     proxy_pass https://$4:$5;
 }
-  " | sudo tee -a /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
+  " | sudo tee /etc/nginx/conf.d/bots/bot_"$3".conf  # bot_"$5".conf - Можно указать port, а не токен
   echo "=== Файл конфигурации бота: bot_$3.conf ==="
 
 #  printf "\n=== Перечитываем конфигурацию Nginx (Мягкий перезапуск) ===\n"
