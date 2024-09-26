@@ -36,7 +36,7 @@ config_M = Settings()
 
 if not config_M.PUBLIC_IP:
     config_M.PUBLIC_IP = requests.get('https://api.ipify.org').text
-    print(config_M.PUBLIC_IP)
+    logging.debug(f"=== {config_M.PUBLIC_IP=} ===")
 
 
 BASE_WEBHOOK_URL = f"https://{config_M.PUBLIC_IP}:8443"
@@ -46,7 +46,7 @@ WEBHOOK_SSL_KEY = "/etc/ssl/nginx/" + config_M.PUBLIC_IP + ".self.key"
 # ========= LOGS =============================
 LOG_FILE = config_M.LOG_MANAGE
 stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.INFO)
+stream_handler.setLevel(logging.ERROR)
 
 logging.basicConfig(
     level=logging.ERROR,

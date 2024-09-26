@@ -34,11 +34,11 @@ def on_startup():
 
 app.include_router(router)
 
-logging.warning(f"=== Настройки manageBots: ===")
-logging.warning(f"{BASE_WEBHOOK_URL= }")
-logging.warning(f"{WEBHOOK_SSL_CERT= }")
-logging.warning(f"{WEBHOOK_SSL_KEY= }")
-[logging.warning(f"{param}") for param in config_M]
+logging.info(f"=== Настройки manageBots: ===")
+logging.info(f"{BASE_WEBHOOK_URL= }")
+logging.info(f"{WEBHOOK_SSL_CERT= }")
+logging.info(f"{WEBHOOK_SSL_KEY= }")
+[logging.info(f"{param}") for param in config_M]
 
 
 if __name__ == "__main__":
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 # Запуск 2 с терминала:
 # uvicorn appMB.main:app --host 127.0.0.1 --port 8090 --reload
 
-print("============ E N D ============")
+print("============ E N D ============\n\n")
 
 
 # ==========================================================

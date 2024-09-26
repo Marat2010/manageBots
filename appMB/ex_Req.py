@@ -1,0 +1,152 @@
+""" Примеры запросов к API """
+
+import requests
+
+
+# ========= Получение всех ботов =========================
+def get_all_bots():
+    import requests
+    headers = {
+        'accept': 'application/json',
+    }
+    response = requests.get('http://127.0.0.1:8900/api/bots', headers=headers)
+    return response
+
+
+# ========= Обновление =========================
+def update_bot_by_id(data):
+    headers = {
+        'accept': 'application/json',
+    }
+    params = data
+    # params = {
+    #     'idpk': bot_id,
+    #     'web_server_host': '127.0.0.1',
+    #     'web_server_port': '9001',
+    #     'description': 'Бот делает ...',
+    #     'active': 'Нет',
+    #     'token_tg': '32ewew:323',
+    #     'url_bwh_id': '1',
+    # }
+    response = requests.put('http://127.0.0.1:8900/api/bots/update', params=params, headers=headers)
+    return response
+
+
+# ============ Добавление бота в систему ======================
+def add_bot_by_token(token):
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    json_data = {
+        'token_tg': token,
+    }
+    response = requests.post('http://127.0.0.1:8900/api/bots/add_bot', headers=headers, json=json_data)
+    return response
+
+
+# ============ Включение, выключение бота по порту======================
+def activate_bot_by_port(web_server_port, active):
+    headers = {
+        'accept': 'application/json',
+    }
+    params = {
+        'web_server_port': web_server_port,
+        'active': active,   # 'active': 'Нет' или 'Да'
+    }
+    response = requests.patch('http://127.0.0.1:8900/api/bots/update_active_by_port', params=params, headers=headers)
+    return response
+
+
+# ============ Включение, выключение бота по токену======================
+def activate_bot_by_token(token, active):
+    headers = {
+        'accept': 'application/json',
+    }
+    params = {
+        'token_tg': token,
+        'active': active,   # 'active': 'Нет' или 'Да'
+    }
+    response = requests.patch('http://127.0.0.1:8900/api/bots/update_active_by_token', params=params, headers=headers)
+    return response
+
+
+# ============ Удаление бота из системы ======================
+def del_bot_by_port(web_server_port):
+    headers = {
+        'accept': 'application/json',
+    }
+    params = {
+        'web_server_port': web_server_port,
+    }
+    response = requests.delete('http://127.0.0.1:8900/api/bots/del_by_port', params=params, headers=headers)
+    return response
+
+
+# =======================================================
+# =======================================================
+# ========= Получение всех ботов (пример) ================
+print("==== Получение всех ботов (пример)========")
+
+resp = get_all_bots()
+print(f"== {resp.json()=} ==")
+
+
+# ========= Обновление (пример) =========================
+print("==== Обновление (пример) ========")
+
+# data_bot = {
+#     'idpk': 1,
+#     'web_server_host': '127.0.0.1',
+#     'web_server_port': '9001',
+#     'description': '1 Бот делает ...',
+#     'active': 'Нет',
+#     'token_tg': '32ewew:323',
+#     'url_bwh_id': '1',
+# }
+#
+# resp = update_bot_by_id(data_bot)
+#
+# data_json = resp.json()
+# print(f"== {data_json=} ==")
+
+# ========= Добавление бота в систему (пример) ===============
+print("==== Добавление бота в систему (пример) ========")
+
+# resp = add_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ")
+# # resp = add_bot_by_token("6267139196:AAHuGWw4g5tjskf9KKS6vNcs62mMYnpKUT4")
+# # resp = add_bot_by_token("6479059814:AAFAi3Ksbq1cqb3hemkRdyL2RYkCWtCVzi0")
+# # resp = add_bot_by_token("6615142110:AAHbuZTgRmqdGibn5MnzRD67CgflJqGJnJQ")
+#
+# data_json = resp.json()
+# print(f"== {data_json=} ==")
+
+# ========= Включение, выключение бота по порту (пример) =================
+print("==== Включение, выключение бота по порту (пример) ========")
+
+# resp = activate_bot_by_port(9001, "Да")
+# # resp = activate_bot_by_port(9001, "Нет")
+#
+# data_json = resp.json()
+# print(f"== {data_json=} ==")
+
+# ========= Включение, выключение бота по токену (пример) =================
+print("==== Включение, выключение бота по токену (пример) ========")
+
+resp = activate_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ", "Да")
+# resp = activate_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ", "Нет")
+
+data_json = resp.json()
+print(f"== {data_json=} ==")
+
+# ========= Удаление бота из системы (пример) ===============
+print("==== Удаление бота из системы (пример) ========")
+
+# resp = del_bot_by_port(9003)
+# data_json = resp.json()
+# print(f"== {data_json=} ==")
+
+
+# ==================================================
+# ==================================================
+# ==================================================

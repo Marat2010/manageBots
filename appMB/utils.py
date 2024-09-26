@@ -29,6 +29,7 @@ class ServerPort:
     @classmethod
     def set_web_server_port(cls, web_server_port):
         cls.web_server_port = web_server_port
+        logging.debug(f"====={cls.web_server_port=} =======")
 
     @classmethod
     def get_web_server_port(cls) -> int | None:
@@ -41,11 +42,11 @@ class ServerPort:
 
         while True:
             web_server_port += 1
-            logging.info("+++++======== web_server_port :", web_server_port)
+            logging.debug(f"=== {web_server_port=} ===")
 
             # Проверка на то, что порт не занят другим ботом (проверка в БД).
             if BotsOrm.by_port_get(web_server_port) is not None:
-                logging.info(f"=========== в БД такой порта есть: {web_server_port}  =========")
+                logging.debug(f"=========== в БД такой порта есть: {web_server_port}  =========")
                 continue
 
             # ----------------------------------------
@@ -63,10 +64,10 @@ class ServerPort:
             if proc.returncode == 1:  # выход, при условии, что порт не занят
                 break
             else:
-                logging.info(f"=========== в ОС такой порт занят: {web_server_port}  =========")
+                logging.debug(f"=========== в ОС такой порт занят: {web_server_port}  =========")
 
             # ----------------------------------------
-
+        logging.debug(f"=== {web_server_port=} ===")
         return web_server_port
 
 
@@ -113,7 +114,7 @@ async def set_token(active: bool, token: str) -> User | TelegramUnauthorizedErro
                     certificate=FSInputFile(WEBHOOK_SSL_CERT),
                     secret_token=WEBHOOK_SECRET)
 
-                logging.info(f"\n\n  === new_bot.get_webhook_info(): ===\n{await new_bot.get_webhook_info()}\n")
+                logging.debug(f"\n\n  === new_bot.get_webhook_info(): ===\n{await new_bot.get_webhook_info()}\n")
             else:
                 await new_bot.set_webhook(
                     f"{BASE_WEBHOOK_URL}{WEBHOOK_PATH}{token}",
@@ -168,7 +169,7 @@ def change_state_bot(bot: BotsOrm, add_del: str = None) -> User:
             raise HTTPException(status_code=422,
                                 detail=f"=== Не УДАЛОСЬ добавить или удалить бота в, из Файловой системы !!!\n"
                                        f" Ошибки: '{bot_proc.stderr}' ===")
-        logging.info(f"\n{bot_proc.stdout}\n")
+        logging.debug(f"\n=== {bot_proc.stdout=} ===\n")
 
     # === 3. Добавление или Удаление бота из конфигурации Nginx ===
     # === в зависимости от bot.active (ActiveBot.Yes или ActiveBot.No) ===
@@ -182,7 +183,7 @@ def change_state_bot(bot: BotsOrm, add_del: str = None) -> User:
         raise HTTPException(status_code=422,
                             detail=f"=== Не УДАЛОСЬ добавить или удалить бота из конфигурации Nginx !!!\n"
                                    f" Ошибки: '{bot_proc.stderr}' ===")
-    logging.info(f"\n{bot_proc.stdout}\n")
+    logging.debug(f"\n=== {bot_proc.stdout} ===\n")
 
     return bot_info
 

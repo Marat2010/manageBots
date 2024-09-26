@@ -104,25 +104,23 @@ def add_url_bwh(url: SUrlAdd = Depends(), db_session: Session = Depends(get_db))
 @router.post("/add_bot", summary="Добавить Нового бота для 'OWNER'", tags=["Manage Bots"])
 def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> SBot:
     data = bot.model_dump()
-    data.update({"web_server_host": config_M.WEB_SERVER_HOST})
-    data.update({"web_server_port": ServerPort.get_web_server_port()})
-    data.update({"url_bwh_id": 1})
-    data.update({"active": ActiveBot.Yes})  # Необходимо установить для добавления вебхуку и бота
-    # data.update({"active": ActiveBot.No})
+    data.update({"web_server_host": config_M.WEB_SERVER_HOST,
+                 "web_server_port": ServerPort.get_web_server_port(),
+                 "url_bwh_id": 1,
+                 "active": ActiveBot.Yes,  # Для сразой активации (Если не надо - ActiveBot.No)
+                 "bot_username": "Бот еще не запускался"
+                 })
+
     logging.info(f"\n\n  ===== {data=} =====\n")
     new_bot_model = BotsOrm(**data)
     db_session.add(new_bot_model)
 
     try:
         db_session.flush()
-        db_session.commit()
     except exc.IntegrityError as e:
-        logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
-        # new_bot_model.active = ActiveBot.No  # Необходимо, чтобы отключить вебхук и удалить бота
-        # change_state_bot(new_bot_model, "Del")  # Отключение бота от вебхука
+        logging.error(f"\n\n  === Не верные данные для БД!: ===\n{e.args=:}\n")
         db_session.rollback()
-        ServerPort.set_web_server_port(new_bot_model.web_server_port-1)
-        raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
+        raise HTTPException(status_code=422, detail=f"Не верные данные для БД: {e.args}")
 
     # ======================================================================
     logging.info(f"\n\n  === Добавление бота: ===\n{new_bot_model=} \n")
@@ -135,6 +133,7 @@ def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> S
     new_bot = SBot.model_validate(new_bot_model)
     ServerPort.set_web_server_port(new_bot_model.web_server_port)  # Запомнить последний использованный порт
 
+    db_session.commit()
     return new_bot
 
 
@@ -142,9 +141,8 @@ def add_bot_owner(bot: SBotAddOwner, db_session: Session = Depends(get_db)) -> S
 # ============== For Manage bots ========================
 # ============ by web_server_port =======================
 
-# @router.post("/get_by_port", tags=["Manage Bots by web_server_port"],
 @router.get("/get_by_port", tags=["Manage Bots by web_server_port"],
-             summary="Получить одного бота по фильтру 'web_server_port'")
+            summary="Получить одного бота по фильтру 'web_server_port'")
 def get_by_port(bot: SBotGetByPort = Depends(),
                 db_session: Session = Depends(get_db)) -> SBot | dict:
     data = bot.model_dump()
@@ -175,7 +173,6 @@ def delete_by_port(web_server_port, db_session: Session = Depends(get_db)) -> SB
 # ============== For Manage bots ========================
 # ================ by token_tg ==========================
 
-# @router.post("/get_by_token", tags=["Manage Bots by token_tg"],
 @router.get("/get_by_token", tags=["Manage Bots by token_tg"],
              summary="Получить одного бота по фильтру 'token_tg'")
 def get_by_token(bot: SBotGetByToken = Depends(),
@@ -207,7 +204,6 @@ def delete_by_token(token_tg, db_session: Session = Depends(get_db)) -> SBotDel:
 # ================================================
 # ============== Общее в методах =================
 # ================================================
-# def upd_bot(bot_model: Type[BotsOrm], data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
 def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db)) -> SBot | dict:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
@@ -228,7 +224,6 @@ def upd_bot(bot_model: BotsOrm, data: dict, db_session: Session = Depends(get_db
     return bot  # Можно сразу 'SBot.model_validate(bot_model)'
 
 
-# def del_bot(bot_model: Type[BotsOrm], db_session: Session = Depends(get_db)) -> SBotDel:
 def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDel:
     if bot_model is None:
         logging.warning(f"\n\n  === Бот не найден ===\n")
@@ -248,46 +243,4 @@ def del_bot(bot_model: BotsOrm, db_session: Session = Depends(get_db)) -> SBotDe
 
 # ==================================================================
 # ==================================================================
-# Добавление бота с учетом указания всех данных (порт, описание, ...)
-# # def add_bot(bot: SBotAdd, db_session: Session = Depends(get_db)) -> SBot:
-# @router.post("/add", summary="Добавить нового бота", tags=["Manage Bots"])
-# def add_bot(bot: SBotAdd = Depends(), db_session: Session = Depends(get_db)) -> SBot:
-#     data = bot.model_dump()
-#
-#     new_bot_model = BotsOrm(**data)
-#
-#     # raise HTTPException(status_code=422,
-#     #                     detail=f"----=== Проверка ДАННЫХ !!!=======-----\n"
-#     #                            f" Ошибки: '{data=}'\n {new_bot_model=} ===")
-#
-#
-#     # url = (db_session.query(BaseWebhookUrlOrm).
-#     #        filter(BaseWebhookUrlOrm.id == data.get("url_bwh")).first())
-#
-#     # new_bot_model.url_bwh_id = url.id
-#     # new_bot_model.url_bwh = url
-#     # if new_bot_model.url_bwh_id is None:
-#     #     logging.info(f"\n\n  ---qqqq--------===== {new_bot_model=} =====--------------\n")
-#     db_session.add(new_bot_model)
-#
-#     # ======================================================================
-#     # logging.info(f"\n\n  === Добавление бота: ===\n{new_bot_model=} \n")
-#     # bot_info = change_state_bot(new_bot_model)  # Отключение или включение вебхука для бота
-#     # new_bot_model.bot_username = bot_info.username
-#     # ======================================================================
-#     new_bot_model.bot_username = "Test USER TG"
-#
-#     try:
-#         db_session.flush()
-#         db_session.commit()
-#     except exc.IntegrityError as e:
-#         logging.error(f"\n\n  === Не верные данные: ===\n{e.args=:}\n")
-#         db_session.rollback()
-#         raise HTTPException(status_code=422, detail=f"Не верные данные: {e.args}")
-#
-#     # new_bot_model.url_bwh = data.get("url_bwh_id")
-#     logging.info(f"\n\n  ---5--------===== {new_bot_model=} =====--------------\n")
-#
-#     new_bot = SBot.model_validate(new_bot_model)
-#     return new_bot
-# ================================================
+
