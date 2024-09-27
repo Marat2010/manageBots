@@ -13,7 +13,7 @@ def get_all_bots():
     return response
 
 
-# ========= Обновление =========================
+# ========= Общее Обновление =========================
 def update_bot_by_id(data):
     headers = {
         'accept': 'application/json',
@@ -92,8 +92,8 @@ resp = get_all_bots()
 print(f"== {resp.json()=} ==")
 
 
-# ========= Обновление (пример) =========================
-print("==== Обновление (пример) ========")
+# ========= Общее Обновление (пример) =========================
+print("==== Общее Обновление (пример) ========")
 
 # data_bot = {
 #     'idpk': 1,
@@ -113,10 +113,10 @@ print("==== Обновление (пример) ========")
 # ========= Добавление бота в систему (пример) ===============
 print("==== Добавление бота в систему (пример) ========")
 
-# resp = add_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ")
-# # resp = add_bot_by_token("6267139196:AAHuGWw4g5tjskf9KKS6vNcs62mMYnpKUT4")
-# # resp = add_bot_by_token("6479059814:AAFAi3Ksbq1cqb3hemkRdyL2RYkCWtCVzi0")
-# # resp = add_bot_by_token("6615142110:AAHbuZTgRmqdGibn5MnzRD67CgflJqGJnJQ")
+# resp = add_bot_by_token("6189xxxx:AAEdN................FB-MtAQ")
+# # resp = add_bot_by_token("6267xxxxx:AAHuG.................YnpKUT4")
+# # resp = add_bot_by_token("6479xxxxx:AAFAi3.................CWtCVzi0")
+# # resp = add_bot_by_token("6615xxxxx:AAHbuZ.................JqGJnJQ")
 #
 # data_json = resp.json()
 # print(f"== {data_json=} ==")
@@ -133,8 +133,8 @@ print("==== Включение, выключение бота по порту (�
 # ========= Включение, выключение бота по токену (пример) =================
 print("==== Включение, выключение бота по токену (пример) ========")
 
-resp = activate_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ", "Да")
-# resp = activate_bot_by_token("6189775277:AAEdN3J6195JHePhN4wfE-BZTszwFB-MtAQ", "Нет")
+resp = activate_bot_by_token("6189xxxxx:AAEdN3................B-MtAQ", "Да")
+# resp = activate_bot_by_token("6189xxxx:AAEdN..................B-MtAQ", "Нет")
 
 data_json = resp.json()
 print(f"== {data_json=} ==")
