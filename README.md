@@ -19,7 +19,7 @@
 
 2. Скачиваем и запускаем первый скрипт, выполним команду:  
     ```
-    wget -O ./0_prepare.sh https://raw.githubusercontent.com/Marat2010/manageBots/Scripts/0_prepare.sh && chmod +x 0_prepare.sh && ./0_prepare.sh
+    wget -O ./0_prepare.sh https://raw.githubusercontent.com/Marat2010/manageBots/master/Scripts/0_prepare.sh && chmod +x 0_prepare.sh && ./0_prepare.sh
     ```
    Скрипт подготовит всё, для запуска менеджера ботов: 
    - скачает репозиторий
