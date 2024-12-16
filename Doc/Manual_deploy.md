@@ -96,7 +96,7 @@
 	`dir /etc/ssl/nginx`
 
 	>Запускаем команду (IP адрес меняем на свой):  
-	`openssl req -newkey rsa:2048 -sha256 -nodes -keyout=/etc/ssl/nginx/80.78.243.201.self.key -x509 -days 365 -out	/etc/ssl/nginx/80.78.243.201.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=80.78.243.201"`  
+	`openssl req -newkey rsa:2048 -sha256 -nodes -keyout /etc/ssl/nginx/80.78.243.201.self.key -x509 -days 365 -out /etc/ssl/nginx/80.78.243.201.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Home/CN=80.78.243.201"`  
 
 	В каталоге **/etc/ssl/nginx/** сформируются два файла.
 
