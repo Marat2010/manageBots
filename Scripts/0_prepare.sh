@@ -138,11 +138,12 @@ fi
 #========================================================
 echo
 echo "=== Копирование проекта в каталог пользователя '$PWD' ==="
-git clone https://github.com/Marat2010/manageBots
+git clone -b v2_1 https://github.com/Marat2010/manageBots
 wait
 
+mkdir -v "$HOME/.config"
 mkdir -v "$HOME/.config/mc"
-cp -vR "$HOME/manageBots/Scripts/.config/mc/*" "$HOME/.config/mc/"
+cp -vR "$HOME"/manageBots/Scripts/.config/mc/* "$HOME"/.config/mc/
 
 #=======================================================
 echo 
@@ -174,18 +175,18 @@ pip install -r requirements.txt
 
 #=======================================================
 printf "\n=== Подготовка файлов окружения ===\n"
-mv app/.env_example_manage app/.env_manage
+mv appMB/.env_example_m appMB/.env_m
 echo
-echo "====================================================="
-echo "===   Отредактируйте переменные окружения:        ==="
-echo "=== Для приложения файл: app/.env_manage          ==="
-echo "====================================================="
+echo "=============================================================="
+echo "=== Отредактируйте при необходимости переменные окружения: ==="
+echo "===       Для приложения файл: appMB/.env_m                ==="
+echo "=============================================================="
 read -rp "=== Если прочитали, для продолжения нажмите enter ==="
 
 #=======================================================
 printf "\n=== Предварительная подготовка Nginx конфигурации ===\n"
-public_ip="$(wget -q -O - ipinfo.io/ip)"
 
+public_ip="$(wget -q -O - ipinfo.io/ip)"
 read -rp "=== Введите IP адрес сервера VPS:($public_ip - по умолчанию (Enter))" set_ip
 
 if [ -n "$set_ip" ]; then
@@ -193,8 +194,18 @@ if [ -n "$set_ip" ]; then
 fi
 echo "PUBLIC_IP='$public_ip'" | sudo tee -a /etc/environment
 
+#-------------------------
+app_port=8900
+read -rp "=== Введите локальный порт для приложения API:(8900 - по умолчанию (Enter))" set_port
+
+if [ -n "$set_port" ]; then
+    app_port=$set_port
+fi
+echo "APP_PORT='$app_port'" | sudo tee -a /etc/environment
+
+#-------------------------
 ./Scripts/ssl.sh "$public_ip"
-./Scripts/nginx.sh "$public_ip"
+./Scripts/nginx.sh "$public_ip" "$app_port"
 
 #=======================================================
 printf "\n\n=== Запуск сервиса, службы (SYSTEMD) Менеджер ботов ===\n"
@@ -216,11 +227,7 @@ if [ "$run_service" == "y" ]; then
     EnvironmentFile=/etc/environment
     Environment='PROJECT_NAME=manageBots'
 
-    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 12000 --reload'    
-
-    # ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/python app/main.py'
-    # ExecStart=$HOME/$proj_name/Run_manage.sh
-
+    ExecStart=/usr/bin/bash -c 'cd $HOME/$proj_name && source .venv/bin/activate && .venv/bin/uvicorn appMB.main:app --host 127.0.0.1 --port $app_port'
 
     [Install]
     WantedBy=multi-user.target
@@ -236,55 +243,11 @@ fi
 printf "\n\n====== Информация для проверки =========================\n"
 
 printf "\n=== Test веба: https://%s:8443/test ===  \n" "$public_ip"
-printf "\n=== API - Менеджер ботов (swagger): https://%s:5080/docs ===  \n" "$public_ip"
+printf "\n=== API - Менеджер ботов (swagger): https://%s:5900/docs ===  \n" "$public_ip"
 printf "\n=== Проверка токена: https://api.telegram.org/bot661....:AA...JQ/getWebhookInfo ===  \n"
 printf "\n==========================================================\n"
 
 
 #=======================================================
 #=======================================================
-#=======================================================
-##=======================================================
-#echo
-#read -rp "=== Введите название проекта папки, если хотите поменять (manageBots - по умолчанию нет(Enter)): " proj_name
-#
-#if [ -z "$proj_name" ]
-#then
-#    proj_name="manageBots"
-#    printf "\n=== Проект в папке: %s ===\n" "'$proj_name'"
-#else
-#    printf "\n=== Переносим проект 'manageBots' в -> %s \n" "'$proj_name'"
-#    mv -fv manageBots $proj_name
-#fi
-#
-#cd $proj_name || { echo "----- !!!!! Ошибка !!!!! -----"; }
-#pwd
-#ls -al
-##=======================================================
-#=======================================================
-#mv our_Bots/bot_15001/.env_example_bot our_Bots/bot_15001/.env_bot
-#mv our_Bots/bot_15002/.env_example_bot our_Bots/bot_15002/.env_bot
-#=======================================================
-#=======================================================
-#ls -al | grep $proj_name
-#=======================================================
-#  sed 's/# autologin=dgod/autologin=ubuntu/' /path/to/file
-#  sed 's/root/# root/' /etc/ftpusers
-#=======================================================
-#sudo cp $HOME/$PROJECT_NAME/ManageBots.service /lib/systemd/system/ManageBots.service
-#sudo systemctl daemon-reload
-#sudo systemctl enable ManageBots.service
-#sudo systemctl start ManageBots.service
-#=======================================================
-#" > /etc/vsftpd.conf
-#=======================================================
-#pip install aiogram==3.10.0
-#pip freeze > requirements.txt
-#=======================================================
-
-
-
-
-
-
 

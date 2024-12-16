@@ -3,6 +3,7 @@
 # Предварительная подготовка Nginx конфигурации
 # Запуск в шеле: ./Scripts/nginx_prepare.sh 178.1.1.1
 # Первый параметр $1 - public_ip, внешний IP адрес (пример 178.1.1.1)
+# Второй параметр $2 - app_port, локальный порт для приложения (пример 8900)
 
 echo
 if [ "$USER" != "root" ]; then
@@ -34,7 +35,9 @@ if [ ! -f "/etc/nginx/conf.d/manageBots.conf" ]; then
     return 200 '<!DOCTYPE html><meta charset=\'utf-8\'>
       <hr><h2>Менеджер ботов (проверка Nginx):</h2>
       <h3>&emsp;<i>Основная конфигурация:</i> /etc/nginx/conf.d/manageBots.conf<br><br>
-      &emsp;<i>Конфигурация ботов:</i> /etc/nginx/conf.d/bots/...</h3><hr>';
+      &emsp;<i>Конфигурация ботов:</i> /etc/nginx/conf.d/bots/...</h3><hr>
+      <h4>API manageBots local: http://127.0.0.1:$2</h4>
+      <h4>API manageBots remote: https://$1:5900</h4>';
   }
 
     include /etc/nginx/conf.d/bots/*.conf;
@@ -56,7 +59,7 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
   echo "server {
   server_name _;
 
-  listen 5080 ssl;
+  listen 5900 ssl;
 
   ssl_certificate       /etc/ssl/nginx/$1.self.crt;
   ssl_certificate_key   /etc/ssl/nginx/$1.self.key;
@@ -69,7 +72,7 @@ if [ ! -f "/etc/nginx/conf.d/api_manageBots.conf" ]; then
     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     proxy_redirect off;
     proxy_buffering off;
-    proxy_pass http://localhost:12000;
+    proxy_pass http://127.0.0.1:$2;
   }
 }
   " | sudo tee /etc/nginx/conf.d/api_manageBots.conf
@@ -85,12 +88,9 @@ printf "\n=== Перечитываем конфигурацию Nginx (Мягк�
 sudo nginx -s reload
 sudo nginx -t
 
+
 #=====================================================
-
-
-#==========================================
-#==========================================
-#==========================================
+#=====================================================
 #  printf "\n=== Перезапускаем Nginx сервер ===\n"
 #  sudo systemctl daemon-reload
 #  sudo systemctl restart nginx.service

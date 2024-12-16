@@ -38,19 +38,6 @@ fi
 #================================================
 #================================================
 #    "last_error_message": "SSL error {error:0A000086:SSL routines::certificate verify failed}",
-
 #openssl genrsa -out webhook_pkey.pem 2048
 #openssl req -new -x509 -days 3650 -key webhook_pkey.pem -out webhook_cert.pem
-
-#--------- 1 -----------
-#openssl genrsa -out 178.204.149.172.self.key 2048
-#openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout /etc/ssl/nginx/178.204.149.172.self.key -x509 -days 365 -out /etc/ssl/nginx/178.204.149.172.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Mara/OU='IT'/CN='$1'/emailAddress='smg_2006@list.ru'"
-
-#openssl req -newkey rsa:2048 -sha256 -nodes -keyout /etc/ssl/nginx/176.124.209.65.self.key -x509 -days 365 -out /etc/ssl/nginx/176.124.209.65.self.crt -subj "/C=RU/ST=RT/L=KAZAN/O=Mara/CN='176.124.209.65'"
 #================================================
-#================================================
-
-
-
-
-
